@@ -3,15 +3,15 @@ package net.generica.katalog.repository;
 import net.generica.katalog.domain.PersistentAuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.Instant;
 import java.util.List;
 
 /**
- * Spring Data JPA repository for the PersistentAuditEvent entity.
+ * Spring Data MongoDB repository for the PersistentAuditEvent entity.
  */
-public interface PersistenceAuditEventRepository extends JpaRepository<PersistentAuditEvent, Long> {
+public interface PersistenceAuditEventRepository extends MongoRepository<PersistentAuditEvent, String> {
 
     List<PersistentAuditEvent> findByPrincipal(String principal);
 
