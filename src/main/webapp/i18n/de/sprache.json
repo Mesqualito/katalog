@@ -1,0 +1,22 @@
+{
+    "katalogApp": {
+        "sprache": {
+            "home": {
+                "title": "Spraches",
+                "createLabel": "Sprache erstellen",
+                "createOrEditLabel": "Sprache erstellen oder bearbeiten"
+            },
+            "created": "Sprache erstellt mit ID {{ param }}",
+            "updated": "Sprache aktualisiert mit ID {{ param }}",
+            "deleted": "Sprache gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Sprache {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Sprache"
+            },
+            "sprachCode": "Sprach Code",
+            "sprachBezeichnung": "Sprach Bezeichnung"
+        }
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "name": "Bezeichnung",
+    "fields": [
+        {
+            "fieldName": "bezeichnung",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "sprache",
+            "otherEntityName": "sprache",
+            "otherEntityField": "sprache",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "bezeichnung"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "gruppe",
+            "otherEntityName": "gruppe",
+            "otherEntityField": "gruppe",
+            "otherEntityRelationshipName": "bezeichnung"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "bezeichnung",
+            "relationshipName": "einzelwort",
+            "otherEntityName": "wort",
+            "otherEntityField": "wort",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20190211170350",
+    "entityTableName": "bezeichnung",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Bezeichnung.
+    -->
+    <changeSet id="20190211170350-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="sprache_id"
+                                 baseTableName="bezeichnung"
+                                 constraintName="fk_bezeichnung_sprache_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sprache"/>
+
+        <addForeignKeyConstraint baseColumnNames="gruppe_id"
+                                 baseTableName="bezeichnung"
+                                 constraintName="fk_bezeichnung_gruppe_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="gruppe"/>
+
+        <addForeignKeyConstraint baseColumnNames="bezeichnung_id"
+                                 baseTableName="bezeichnung_einzelwort"
+                                 constraintName="fk_bezeichnung_einzelwort_bezeichnung_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="bezeichnung"/>
+        <addForeignKeyConstraint baseColumnNames="einzelwort_id"
+                                 baseTableName="bezeichnung_einzelwort"
+                                 constraintName="fk_bezeichnung_einzelwort_einzelwort_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="wort"/>
+        
+    </changeSet>
+</databaseChangeLog>
