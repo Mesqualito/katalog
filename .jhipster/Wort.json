@@ -1,0 +1,66 @@
+{
+    "name": "Wort",
+    "fields": [
+        {
+            "fieldName": "wort",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "sprachCode",
+            "otherEntityName": "sprache",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "wort"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "gruppenCode",
+            "otherEntityName": "gruppe",
+            "otherEntityRelationshipName": "wort"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "wort",
+            "relationshipName": "wort",
+            "otherEntityName": "wort",
+            "otherEntityField": "verbund",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "wort",
+            "otherEntityName": "wort",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "wort"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "wort",
+            "otherEntityName": "bezeichnung",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "wort"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "wort",
+            "otherEntityName": "ausdruck",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "wort"
+        }
+    ],
+    "changelogDate": "20190211102327",
+    "entityTableName": "wort",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

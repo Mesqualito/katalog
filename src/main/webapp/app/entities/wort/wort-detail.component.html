@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="wort">
+            <h2><span jhiTranslate="katalogApp.wort.detail.title">Wort</span> {{wort.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="katalogApp.wort.wort">Wort</span></dt>
+                <dd>
+                    <span>{{wort.wort}}</span>
+                </dd>
+                <dt><span jhiTranslate="katalogApp.wort.sprachCode">Sprach Code</span></dt>
+                <dd>
+                    <div *ngIf="wort.sprachCode">
+                        <a [routerLink]="['/sprache', wort.sprachCode?.id, 'view']">{{wort.sprachCode?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="katalogApp.wort.wort">Wort</span></dt>
+                <dd>
+                    <span *ngFor="let wort of wort.worts; let last = last">
+                        <a [routerLink]="['/wort', wort?.id, 'view' ]">{{wort.verbund}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/wort', wort.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
