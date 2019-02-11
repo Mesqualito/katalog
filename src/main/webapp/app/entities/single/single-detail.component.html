@@ -9,22 +9,22 @@
                 <dd>
                     <span>{{single.wort}}</span>
                 </dd>
-                <dt><span jhiTranslate="katalogApp.single.sprachCode">Sprach Code</span></dt>
+                <dt><span jhiTranslate="katalogApp.single.sprache">Sprache</span></dt>
                 <dd>
-                    <div *ngIf="single.sprachCode">
-                        <a [routerLink]="['/sprache', single.sprachCode?.id, 'view']">{{single.sprachCode?.id}}</a>
+                    <div *ngIf="single.sprache">
+                        <a [routerLink]="['/sprache', single.sprache?.id, 'view']">{{single.sprache?.sprachCode}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="katalogApp.single.gruppenCode">Gruppen Code</span></dt>
+                <dt><span jhiTranslate="katalogApp.single.gruppe">Gruppe</span></dt>
                 <dd>
-                    <div *ngIf="single.gruppenCode">
-                        <a [routerLink]="['/gruppe', single.gruppenCode?.id, 'view']">{{single.gruppenCode?.id}}</a>
+                    <div *ngIf="single.gruppe">
+                        <a [routerLink]="['/gruppe', single.gruppe?.id, 'view']">{{single.gruppe?.gruppe}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="katalogApp.single.single">Single</span></dt>
+                <dt><span jhiTranslate="katalogApp.single.wort">Wort</span></dt>
                 <dd>
-                    <span *ngFor="let single of single.singles; let last = last">
-                        <a [routerLink]="['/single', single?.id, 'view' ]">{{single.wort}}</a>{{last ? '' : ', '}}
+                    <span *ngFor="let wort of single.worts; let last = last">
+                        <a [routerLink]="['/single', wort?.id, 'view' ]">{{wort.single}}</a>{{last ? '' : ', '}}
                     </span>
                 </dd>
             </dl>

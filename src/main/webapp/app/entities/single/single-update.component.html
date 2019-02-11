@@ -22,23 +22,23 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="katalogApp.single.sprachCode" for="field_sprachCode">Sprach Code</label>
-                    <select class="form-control" id="field_sprachCode" name="sprachCode" [(ngModel)]="single.sprachCode">
+                    <label class="form-control-label" jhiTranslate="katalogApp.single.sprache" for="field_sprache">Sprache</label>
+                    <select class="form-control" id="field_sprache" name="sprache" [(ngModel)]="single.sprache">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="spracheOption.id === single.sprachCode?.id ? single.sprachCode : spracheOption" *ngFor="let spracheOption of sprachcodes; trackBy: trackSpracheById">{{spracheOption.id}}</option>
+                        <option [ngValue]="spracheOption.id === single.sprache?.id ? single.sprache : spracheOption" *ngFor="let spracheOption of spraches; trackBy: trackSpracheById">{{spracheOption.sprachCode}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="katalogApp.single.gruppenCode" for="field_gruppenCode">Gruppen Code</label>
-                    <select class="form-control" id="field_gruppenCode" name="gruppenCode" [(ngModel)]="single.gruppenCode" >
+                    <label class="form-control-label" jhiTranslate="katalogApp.single.gruppe" for="field_gruppe">Gruppe</label>
+                    <select class="form-control" id="field_gruppe" name="gruppe" [(ngModel)]="single.gruppe" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="gruppeOption.id === single.gruppenCode?.id ? single.gruppenCode : gruppeOption" *ngFor="let gruppeOption of gruppes; trackBy: trackGruppeById">{{gruppeOption.id}}</option>
+                        <option [ngValue]="gruppeOption.id === single.gruppe?.id ? single.gruppe : gruppeOption" *ngFor="let gruppeOption of gruppes; trackBy: trackGruppeById">{{gruppeOption.gruppe}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label jhiTranslate="katalogApp.single.single" for="field_single">Single</label>
-                    <select class="form-control" id="field_single" multiple name="single" [(ngModel)]="single.singles">
-                        <option [ngValue]="getSelected(single.singles, singleOption)" *ngFor="let singleOption of singles; trackBy: trackSingleById">{{singleOption.wort}}</option>
+                    <label jhiTranslate="katalogApp.single.wort" for="field_wort">Wort</label>
+                    <select class="form-control" id="field_wort" multiple name="wort" [(ngModel)]="single.worts">
+                        <option [ngValue]="getSelected(single.worts, singleOption)" *ngFor="let singleOption of singles; trackBy: trackSingleById">{{singleOption.single}}</option>
                     </select>
                 </div>
             </div>

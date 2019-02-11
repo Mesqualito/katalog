@@ -8,6 +8,8 @@ import { IWort } from 'app/shared/model/wort.model';
 import { WortService } from './wort.service';
 import { ISprache } from 'app/shared/model/sprache.model';
 import { SpracheService } from 'app/entities/sprache';
+import { IGruppe } from 'app/shared/model/gruppe.model';
+import { GruppeService } from 'app/entities/gruppe';
 import { IBezeichnung } from 'app/shared/model/bezeichnung.model';
 import { BezeichnungService } from 'app/entities/bezeichnung';
 import { IAusdruck } from 'app/shared/model/ausdruck.model';
@@ -21,7 +23,9 @@ export class WortUpdateComponent implements OnInit {
     wort: IWort;
     isSaving: boolean;
 
-    sprachcodes: ISprache[];
+    spraches: ISprache[];
+
+    gruppes: IGruppe[];
 
     worts: IWort[];
 
@@ -33,6 +37,7 @@ export class WortUpdateComponent implements OnInit {
         protected jhiAlertService: JhiAlertService,
         protected wortService: WortService,
         protected spracheService: SpracheService,
+        protected gruppeService: GruppeService,
         protected bezeichnungService: BezeichnungService,
         protected ausdruckService: AusdruckService,
         protected activatedRoute: ActivatedRoute
@@ -51,23 +56,30 @@ export class WortUpdateComponent implements OnInit {
             )
             .subscribe(
                 (res: ISprache[]) => {
-                    if (!this.wort.sprachCode || !this.wort.sprachCode.id) {
-                        this.sprachcodes = res;
+                    if (!this.wort.sprache || !this.wort.sprache.id) {
+                        this.spraches = res;
                     } else {
                         this.spracheService
-                            .find(this.wort.sprachCode.id)
+                            .find(this.wort.sprache.id)
                             .pipe(
                                 filter((subResMayBeOk: HttpResponse<ISprache>) => subResMayBeOk.ok),
                                 map((subResponse: HttpResponse<ISprache>) => subResponse.body)
                             )
                             .subscribe(
-                                (subRes: ISprache) => (this.sprachcodes = [subRes].concat(res)),
+                                (subRes: ISprache) => (this.spraches = [subRes].concat(res)),
                                 (subRes: HttpErrorResponse) => this.onError(subRes.message)
                             );
                     }
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+        this.gruppeService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<IGruppe[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IGruppe[]>) => response.body)
+            )
+            .subscribe((res: IGruppe[]) => (this.gruppes = res), (res: HttpErrorResponse) => this.onError(res.message));
         this.wortService
             .query()
             .pipe(
@@ -122,6 +134,10 @@ export class WortUpdateComponent implements OnInit {
     }
 
     trackSpracheById(index: number, item: ISprache) {
+        return item.id;
+    }
+
+    trackGruppeById(index: number, item: IGruppe) {
         return item.id;
     }
 

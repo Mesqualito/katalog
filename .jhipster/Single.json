@@ -12,26 +12,47 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "relationshipName": "sprachCode",
+            "relationshipName": "sprache",
             "otherEntityName": "sprache",
-            "otherEntityField": "id",
+            "otherEntityField": "sprachCode",
             "ownerSide": true,
             "otherEntityRelationshipName": "single"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "gruppenCode",
+            "relationshipName": "gruppe",
             "otherEntityName": "gruppe",
-            "otherEntityField": "id",
+            "otherEntityField": "gruppe",
             "otherEntityRelationshipName": "single"
         },
         {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "single",
+            "relationshipName": "wort",
+            "otherEntityName": "single",
+            "otherEntityField": "single",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
             "relationshipName": "single",
             "otherEntityName": "single",
-            "otherEntityField": "wort",
-            "ownerSide": true
+            "ownerSide": false,
+            "otherEntityRelationshipName": "wort"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "bezeichnung",
+            "otherEntityName": "bezeichnung",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "wort"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "ausdruck",
+            "otherEntityName": "ausdruck",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "wort"
         }
     ],
     "changelogDate": "20190211102831",

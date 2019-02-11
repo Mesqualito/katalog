@@ -29,17 +29,17 @@ public class Bezeichnung implements Serializable {
     private String bezeichnung;
 
     @DBRef
-    @Field("sprachCode")
-    private Sprache sprachCode;
+    @Field("sprache")
+    private Sprache sprache;
 
     @DBRef
-    @Field("gruppenCode")
+    @Field("gruppe")
     @JsonIgnoreProperties("bezeichnungs")
-    private Gruppe gruppenCode;
+    private Gruppe gruppe;
 
     @DBRef
-    @Field("singles")
-    private Set<Single> singles = new HashSet<>();
+    @Field("einzelworts")
+    private Set<Wort> einzelworts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
@@ -63,55 +63,55 @@ public class Bezeichnung implements Serializable {
         this.bezeichnung = bezeichnung;
     }
 
-    public Sprache getSprachCode() {
-        return sprachCode;
+    public Sprache getSprache() {
+        return sprache;
     }
 
-    public Bezeichnung sprachCode(Sprache sprache) {
-        this.sprachCode = sprache;
+    public Bezeichnung sprache(Sprache sprache) {
+        this.sprache = sprache;
         return this;
     }
 
-    public void setSprachCode(Sprache sprache) {
-        this.sprachCode = sprache;
+    public void setSprache(Sprache sprache) {
+        this.sprache = sprache;
     }
 
-    public Gruppe getGruppenCode() {
-        return gruppenCode;
+    public Gruppe getGruppe() {
+        return gruppe;
     }
 
-    public Bezeichnung gruppenCode(Gruppe gruppe) {
-        this.gruppenCode = gruppe;
+    public Bezeichnung gruppe(Gruppe gruppe) {
+        this.gruppe = gruppe;
         return this;
     }
 
-    public void setGruppenCode(Gruppe gruppe) {
-        this.gruppenCode = gruppe;
+    public void setGruppe(Gruppe gruppe) {
+        this.gruppe = gruppe;
     }
 
-    public Set<Single> getSingles() {
-        return singles;
+    public Set<Wort> getEinzelworts() {
+        return einzelworts;
     }
 
-    public Bezeichnung singles(Set<Single> singles) {
-        this.singles = singles;
+    public Bezeichnung einzelworts(Set<Wort> worts) {
+        this.einzelworts = worts;
         return this;
     }
 
-    public Bezeichnung addSingle(Single single) {
-        this.singles.add(single);
-        single.getBezeichnungs().add(this);
+    public Bezeichnung addEinzelwort(Wort wort) {
+        this.einzelworts.add(wort);
+        wort.getBezeichnungs().add(this);
         return this;
     }
 
-    public Bezeichnung removeSingle(Single single) {
-        this.singles.remove(single);
-        single.getBezeichnungs().remove(this);
+    public Bezeichnung removeEinzelwort(Wort wort) {
+        this.einzelworts.remove(wort);
+        wort.getBezeichnungs().remove(this);
         return this;
     }
 
-    public void setSingles(Set<Single> singles) {
-        this.singles = singles;
+    public void setEinzelworts(Set<Wort> worts) {
+        this.einzelworts = worts;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -9,25 +9,25 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "relationshipName": "sprachCode",
+            "relationshipName": "sprache",
             "otherEntityName": "sprache",
-            "otherEntityField": "id",
+            "otherEntityField": "sprache",
             "ownerSide": true,
             "otherEntityRelationshipName": "ausdruck"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "gruppenCode",
+            "relationshipName": "gruppe",
             "otherEntityName": "gruppe",
-            "otherEntityField": "id",
+            "otherEntityField": "gruppe",
             "otherEntityRelationshipName": "ausdruck"
         },
         {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "ausdruck",
-            "relationshipName": "single",
-            "otherEntityName": "single",
-            "otherEntityField": "ausdruck",
+            "relationshipName": "einzelwort",
+            "otherEntityName": "wort",
+            "otherEntityField": "wort",
             "ownerSide": true
         }
     ],

@@ -2,6 +2,7 @@ package net.generica.katalog.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,34 +26,36 @@ public class Wort implements Serializable {
     private String id;
 
     @NotNull
-    @Field("wort")
-    private String wort;
+    @Field("e_wort")
+    private String eWort;
 
     @DBRef
-    @Field("sprachCode")
-    private Sprache sprachCode;
+    @Field("sprache")
+    private Sprache sprache;
 
     @DBRef
-    @Field("gruppenCode")
-    private Set<Gruppe> gruppenCodes = new HashSet<>();
+    @Field("gruppe")
+    @JsonIgnoreProperties("singles")
+    private Gruppe gruppe;
+
+    @DBRef
+    @Field("einzelworts")
+    private Set<Wort> einzelworts = new HashSet<>();
+
     @DBRef
     @Field("worts")
+    @JsonIgnore
     private Set<Wort> worts = new HashSet<>();
 
     @DBRef
-    @Field("worts")
+    @Field("bezeichnungs")
     @JsonIgnore
-    private Set<Wort> worts = new HashSet<>();
+    private Set<Bezeichnung> bezeichnungs = new HashSet<>();
 
     @DBRef
-    @Field("worts")
+    @Field("ausdrucks")
     @JsonIgnore
-    private Set<Bezeichnung> worts = new HashSet<>();
-
-    @DBRef
-    @Field("worts")
-    @JsonIgnore
-    private Set<Ausdruck> worts = new HashSet<>();
+    private Set<Ausdruck> ausdrucks = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
@@ -63,55 +66,68 @@ public class Wort implements Serializable {
         this.id = id;
     }
 
-    public String getWort() {
-        return wort;
+    public String geteWort() {
+        return eWort;
     }
 
-    public Wort wort(String wort) {
-        this.wort = wort;
+    public Wort eWort(String eWort) {
+        this.eWort = eWort;
         return this;
     }
 
-    public void setWort(String wort) {
-        this.wort = wort;
+    public void seteWort(String eWort) {
+        this.eWort = eWort;
     }
 
-    public Sprache getSprachCode() {
-        return sprachCode;
+    public Sprache getSprache() {
+        return sprache;
     }
 
-    public Wort sprachCode(Sprache sprache) {
-        this.sprachCode = sprache;
+    public Wort sprache(Sprache sprache) {
+        this.sprache = sprache;
         return this;
     }
 
-    public void setSprachCode(Sprache sprache) {
-        this.sprachCode = sprache;
+    public void setSprache(Sprache sprache) {
+        this.sprache = sprache;
     }
 
-    public Set<Gruppe> getGruppenCodes() {
-        return gruppenCodes;
+    public Gruppe getGruppe() {
+        return gruppe;
     }
 
-    public Wort gruppenCodes(Set<Gruppe> gruppes) {
-        this.gruppenCodes = gruppes;
+    public Wort gruppe(Gruppe gruppe) {
+        this.gruppe = gruppe;
         return this;
     }
 
-    public Wort addGruppenCode(Gruppe gruppe) {
-        this.gruppenCodes.add(gruppe);
-        gruppe.setWort(this);
+    public void setGruppe(Gruppe gruppe) {
+        this.gruppe = gruppe;
+    }
+
+    public Set<Wort> getEinzelworts() {
+        return einzelworts;
+    }
+
+    public Wort einzelworts(Set<Wort> worts) {
+        this.einzelworts = worts;
         return this;
     }
 
-    public Wort removeGruppenCode(Gruppe gruppe) {
-        this.gruppenCodes.remove(gruppe);
-        gruppe.setWort(null);
+    public Wort addEinzelwort(Wort wort) {
+        this.einzelworts.add(wort);
+        wort.getWorts().add(this);
         return this;
     }
 
-    public void setGruppenCodes(Set<Gruppe> gruppes) {
-        this.gruppenCodes = gruppes;
+    public Wort removeEinzelwort(Wort wort) {
+        this.einzelworts.remove(wort);
+        wort.getWorts().remove(this);
+        return this;
+    }
+
+    public void setEinzelworts(Set<Wort> worts) {
+        this.einzelworts = worts;
     }
 
     public Set<Wort> getWorts() {
@@ -125,13 +141,13 @@ public class Wort implements Serializable {
 
     public Wort addWort(Wort wort) {
         this.worts.add(wort);
-        wort.getWorts().add(this);
+        wort.getEinzelworts().add(this);
         return this;
     }
 
     public Wort removeWort(Wort wort) {
         this.worts.remove(wort);
-        wort.getWorts().remove(this);
+        wort.getEinzelworts().remove(this);
         return this;
     }
 
@@ -139,79 +155,54 @@ public class Wort implements Serializable {
         this.worts = worts;
     }
 
-    public Set<Wort> getWorts() {
-        return worts;
+    public Set<Bezeichnung> getBezeichnungs() {
+        return bezeichnungs;
     }
 
-    public Wort worts(Set<Wort> worts) {
-        this.worts = worts;
+    public Wort bezeichnungs(Set<Bezeichnung> bezeichnungs) {
+        this.bezeichnungs = bezeichnungs;
         return this;
     }
 
-    public Wort addWort(Wort wort) {
-        this.worts.add(wort);
-        wort.getWorts().add(this);
+    public Wort addBezeichnung(Bezeichnung bezeichnung) {
+        this.bezeichnungs.add(bezeichnung);
+        bezeichnung.getEinzelworts().add(this);
         return this;
     }
 
-    public Wort removeWort(Wort wort) {
-        this.worts.remove(wort);
-        wort.getWorts().remove(this);
+    public Wort removeBezeichnung(Bezeichnung bezeichnung) {
+        this.bezeichnungs.remove(bezeichnung);
+        bezeichnung.getEinzelworts().remove(this);
         return this;
     }
 
-    public void setWorts(Set<Wort> worts) {
-        this.worts = worts;
+    public void setBezeichnungs(Set<Bezeichnung> bezeichnungs) {
+        this.bezeichnungs = bezeichnungs;
     }
 
-    public Set<Bezeichnung> getWorts() {
-        return worts;
+    public Set<Ausdruck> getAusdrucks() {
+        return ausdrucks;
     }
 
-    public Wort worts(Set<Bezeichnung> bezeichnungs) {
-        this.worts = bezeichnungs;
+    public Wort ausdrucks(Set<Ausdruck> ausdrucks) {
+        this.ausdrucks = ausdrucks;
         return this;
     }
 
-    public Wort addWort(Bezeichnung bezeichnung) {
-        this.worts.add(bezeichnung);
-        bezeichnung.getWorts().add(this);
+    public Wort addAusdruck(Ausdruck ausdruck) {
+        this.ausdrucks.add(ausdruck);
+        ausdruck.getEinzelworts().add(this);
         return this;
     }
 
-    public Wort removeWort(Bezeichnung bezeichnung) {
-        this.worts.remove(bezeichnung);
-        bezeichnung.getWorts().remove(this);
+    public Wort removeAusdruck(Ausdruck ausdruck) {
+        this.ausdrucks.remove(ausdruck);
+        ausdruck.getEinzelworts().remove(this);
         return this;
     }
 
-    public void setWorts(Set<Bezeichnung> bezeichnungs) {
-        this.worts = bezeichnungs;
-    }
-
-    public Set<Ausdruck> getWorts() {
-        return worts;
-    }
-
-    public Wort worts(Set<Ausdruck> ausdrucks) {
-        this.worts = ausdrucks;
-        return this;
-    }
-
-    public Wort addWort(Ausdruck ausdruck) {
-        this.worts.add(ausdruck);
-        ausdruck.getWorts().add(this);
-        return this;
-    }
-
-    public Wort removeWort(Ausdruck ausdruck) {
-        this.worts.remove(ausdruck);
-        ausdruck.getWorts().remove(this);
-        return this;
-    }
-
-    public void setWorts(Set<Ausdruck> ausdrucks) {
-        this.worts = ausdrucks;
+    public void setAusdrucks(Set<Ausdruck> ausdrucks) {
+        this.ausdrucks = ausdrucks;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -239,7 +230,7 @@ public class Wort implements Serializable {
     public String toString() {
         return "Wort{" +
             "id=" + getId() +
-            ", wort='" + getWort() + "'" +
+            ", eWort='" + geteWort() + "'" +
             "}";
     }
 }

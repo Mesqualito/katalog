@@ -55,7 +55,7 @@ describe('Service Tests', () => {
             it('should update a Wort', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        wort: 'BBBBBB'
+                        eWort: 'BBBBBB'
                     },
                     elemDefault
                 );
@@ -72,7 +72,7 @@ describe('Service Tests', () => {
             it('should return a list of Wort', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        wort: 'BBBBBB'
+                        eWort: 'BBBBBB'
                     },
                     elemDefault
                 );

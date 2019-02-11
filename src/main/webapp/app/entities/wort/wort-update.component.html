@@ -10,28 +10,35 @@
                         [(ngModel)]="wort.id" readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="katalogApp.wort.wort" for="field_wort">Wort</label>
-                    <input type="text" class="form-control" name="wort" id="field_wort"
-                        [(ngModel)]="wort.wort" required/>
-                    <div [hidden]="!(editForm.controls.wort?.dirty && editForm.controls.wort?.invalid)">
+                    <label class="form-control-label" jhiTranslate="katalogApp.wort.eWort" for="field_eWort">E Wort</label>
+                    <input type="text" class="form-control" name="eWort" id="field_eWort"
+                        [(ngModel)]="wort.eWort" required/>
+                    <div [hidden]="!(editForm.controls.eWort?.dirty && editForm.controls.eWort?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.wort?.errors?.required" jhiTranslate="entity.validation.required">
+                        [hidden]="!editForm.controls.eWort?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="katalogApp.wort.sprachCode" for="field_sprachCode">Sprach Code</label>
-                    <select class="form-control" id="field_sprachCode" name="sprachCode" [(ngModel)]="wort.sprachCode">
+                    <label class="form-control-label" jhiTranslate="katalogApp.wort.sprache" for="field_sprache">Sprache</label>
+                    <select class="form-control" id="field_sprache" name="sprache" [(ngModel)]="wort.sprache">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="spracheOption.id === wort.sprachCode?.id ? wort.sprachCode : spracheOption" *ngFor="let spracheOption of sprachcodes; trackBy: trackSpracheById">{{spracheOption.id}}</option>
+                        <option [ngValue]="spracheOption.id === wort.sprache?.id ? wort.sprache : spracheOption" *ngFor="let spracheOption of spraches; trackBy: trackSpracheById">{{spracheOption.sprache}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label jhiTranslate="katalogApp.wort.wort" for="field_wort">Wort</label>
-                    <select class="form-control" id="field_wort" multiple name="wort" [(ngModel)]="wort.worts">
-                        <option [ngValue]="getSelected(wort.worts, wortOption)" *ngFor="let wortOption of worts; trackBy: trackWortById">{{wortOption.verbund}}</option>
+                    <label class="form-control-label" jhiTranslate="katalogApp.wort.gruppe" for="field_gruppe">Gruppe</label>
+                    <select class="form-control" id="field_gruppe" name="gruppe" [(ngModel)]="wort.gruppe" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="gruppeOption.id === wort.gruppe?.id ? wort.gruppe : gruppeOption" *ngFor="let gruppeOption of gruppes; trackBy: trackGruppeById">{{gruppeOption.gruppe}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label jhiTranslate="katalogApp.wort.einzelwort" for="field_einzelwort">Einzelwort</label>
+                    <select class="form-control" id="field_einzelwort" multiple name="einzelwort" [(ngModel)]="wort.einzelworts">
+                        <option [ngValue]="getSelected(wort.einzelworts, wortOption)" *ngFor="let wortOption of worts; trackBy: trackWortById">{{wortOption.wort}}</option>
                     </select>
                 </div>
             </div>

@@ -16,8 +16,8 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="bezeichnung"><span jhiTranslate="katalogApp.bezeichnung.bezeichnung">Bezeichnung</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="sprachCode.id"><span jhiTranslate="katalogApp.bezeichnung.sprachCode">Sprach Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="gruppenCode.id"><span jhiTranslate="katalogApp.bezeichnung.gruppenCode">Gruppen Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="sprache.sprache"><span jhiTranslate="katalogApp.bezeichnung.sprache">Sprache</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="gruppe.gruppe"><span jhiTranslate="katalogApp.bezeichnung.gruppe">Gruppe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -26,13 +26,13 @@
                 <td><a [routerLink]="['/bezeichnung', bezeichnung.id, 'view' ]">{{bezeichnung.id}}</a></td>
                 <td>{{bezeichnung.bezeichnung}}</td>
                 <td>
-                    <div *ngIf="bezeichnung.sprachCode">
-                        <a [routerLink]="['../sprache', bezeichnung.sprachCode?.id, 'view' ]" >{{bezeichnung.sprachCode?.id}}</a>
+                    <div *ngIf="bezeichnung.sprache">
+                        <a [routerLink]="['../sprache', bezeichnung.sprache?.id, 'view' ]" >{{bezeichnung.sprache?.sprache}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="bezeichnung.gruppenCode">
-                        <a [routerLink]="['../gruppe', bezeichnung.gruppenCode?.id, 'view' ]" >{{bezeichnung.gruppenCode?.id}}</a>
+                    <div *ngIf="bezeichnung.gruppe">
+                        <a [routerLink]="['../gruppe', bezeichnung.gruppe?.id, 'view' ]" >{{bezeichnung.gruppe?.gruppe}}</a>
                     </div>
                 </td>
                 <td class="text-right">

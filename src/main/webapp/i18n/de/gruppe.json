@@ -16,7 +16,10 @@
                 "title": "Gruppe"
             },
             "gruppenCode": "Gruppen Code",
-            "gruppenBezeichnung": "Gruppen Bezeichnung"
+            "gruppenBezeichnung": "Gruppen Bezeichnung",
+            "single": "Single",
+            "bezeichnung": "Bezeichnung",
+            "ausdruck": "Ausdruck"
         }
     }
 }

@@ -16,9 +16,12 @@
                 "title": "Single"
             },
             "wort": "Wort",
-            "sprachCode": "Sprach Code",
-            "gruppenCode": "Gruppen Code",
-            "single": "Single"
+            "sprache": "Sprache",
+            "gruppe": "Gruppe",
+            "wort": "Wort",
+            "single": "Single",
+            "bezeichnung": "Bezeichnung",
+            "ausdruck": "Ausdruck"
         }
     }
 }

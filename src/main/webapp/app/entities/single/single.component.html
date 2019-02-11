@@ -16,8 +16,8 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="wort"><span jhiTranslate="katalogApp.single.wort">Wort</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="sprachCode.id"><span jhiTranslate="katalogApp.single.sprachCode">Sprach Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="gruppenCode.id"><span jhiTranslate="katalogApp.single.gruppenCode">Gruppen Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="sprache.sprachCode"><span jhiTranslate="katalogApp.single.sprache">Sprache</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="gruppe.gruppe"><span jhiTranslate="katalogApp.single.gruppe">Gruppe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -26,13 +26,13 @@
                 <td><a [routerLink]="['/single', single.id, 'view' ]">{{single.id}}</a></td>
                 <td>{{single.wort}}</td>
                 <td>
-                    <div *ngIf="single.sprachCode">
-                        <a [routerLink]="['../sprache', single.sprachCode?.id, 'view' ]" >{{single.sprachCode?.id}}</a>
+                    <div *ngIf="single.sprache">
+                        <a [routerLink]="['../sprache', single.sprache?.id, 'view' ]" >{{single.sprache?.sprachCode}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="single.gruppenCode">
-                        <a [routerLink]="['../gruppe', single.gruppenCode?.id, 'view' ]" >{{single.gruppenCode?.id}}</a>
+                    <div *ngIf="single.gruppe">
+                        <a [routerLink]="['../gruppe', single.gruppe?.id, 'view' ]" >{{single.gruppe?.gruppe}}</a>
                     </div>
                 </td>
                 <td class="text-right">

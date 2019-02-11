@@ -44,8 +44,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = KatalogApp.class)
 public class WortResourceIntTest {
 
-    private static final String DEFAULT_WORT = "AAAAAAAAAA";
-    private static final String UPDATED_WORT = "BBBBBBBBBB";
+    private static final String DEFAULT_E_WORT = "AAAAAAAAAA";
+    private static final String UPDATED_E_WORT = "BBBBBBBBBB";
 
     @Autowired
     private WortRepository wortRepository;
@@ -95,7 +95,7 @@ public class WortResourceIntTest {
      */
     public static Wort createEntity() {
         Wort wort = new Wort()
-            .wort(DEFAULT_WORT);
+            .eWort(DEFAULT_E_WORT);
         return wort;
     }
 
@@ -119,7 +119,7 @@ public class WortResourceIntTest {
         List<Wort> wortList = wortRepository.findAll();
         assertThat(wortList).hasSize(databaseSizeBeforeCreate + 1);
         Wort testWort = wortList.get(wortList.size() - 1);
-        assertThat(testWort.getWort()).isEqualTo(DEFAULT_WORT);
+        assertThat(testWort.geteWort()).isEqualTo(DEFAULT_E_WORT);
     }
 
     @Test
@@ -141,10 +141,10 @@ public class WortResourceIntTest {
     }
 
     @Test
-    public void checkWortIsRequired() throws Exception {
+    public void checkeWortIsRequired() throws Exception {
         int databaseSizeBeforeTest = wortRepository.findAll().size();
         // set the field null
-        wort.setWort(null);
+        wort.seteWort(null);
 
         // Create the Wort, which fails.
 
@@ -167,7 +167,7 @@ public class WortResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wort.getId())))
-            .andExpect(jsonPath("$.[*].wort").value(hasItem(DEFAULT_WORT.toString())));
+            .andExpect(jsonPath("$.[*].eWort").value(hasItem(DEFAULT_E_WORT.toString())));
     }
     
     @SuppressWarnings({"unchecked"})
@@ -213,7 +213,7 @@ public class WortResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(wort.getId()))
-            .andExpect(jsonPath("$.wort").value(DEFAULT_WORT.toString()));
+            .andExpect(jsonPath("$.eWort").value(DEFAULT_E_WORT.toString()));
     }
 
     @Test
@@ -233,7 +233,7 @@ public class WortResourceIntTest {
         // Update the wort
         Wort updatedWort = wortRepository.findById(wort.getId()).get();
         updatedWort
-            .wort(UPDATED_WORT);
+            .eWort(UPDATED_E_WORT);
 
         restWortMockMvc.perform(put("/api/worts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -244,7 +244,7 @@ public class WortResourceIntTest {
         List<Wort> wortList = wortRepository.findAll();
         assertThat(wortList).hasSize(databaseSizeBeforeUpdate);
         Wort testWort = wortList.get(wortList.size() - 1);
-        assertThat(testWort.getWort()).isEqualTo(UPDATED_WORT);
+        assertThat(testWort.geteWort()).isEqualTo(UPDATED_E_WORT);
     }
 
     @Test
