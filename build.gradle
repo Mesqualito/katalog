@@ -22,6 +22,7 @@ plugins {
     id "net.ltgt.apt" version "0.19"
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
     id "com.moowork.node" version "1.2.0"
+    id 'org.liquibase.gradle' version '2.0.1'
     //jhipster-needle-gradle-plugins - JHipster will add additional gradle plugins here
 }
 
@@ -122,6 +123,39 @@ if (project.hasProperty('prod')) {
 }
 
 
+if (!project.hasProperty('runList')) {
+    project.ext.runList = 'main'
+}
+
+project.ext.diffChangelogFile = 'src/main/resources/config/liquibase/changelog/' + new Date().format('yyyyMMddHHmmss') + '_changelog.xml'
+
+liquibase {
+    activities {
+        main {
+            driver 'org.h2.Driver'
+            url 'jdbc:h2:file:./target/h2db/db/katalog'
+            username 'katalog'
+            password ''
+            changeLogFile 'src/main/resources/config/liquibase/master.xml'
+            defaultSchemaName ''
+            logLevel 'debug'
+            classpath 'src/main/resources/'
+        }
+        diffLog {
+            driver 'org.h2.Driver'
+            url 'jdbc:h2:file:./target/h2db/db/katalog'
+            username 'katalog'
+            password ''
+            changeLogFile project.ext.diffChangelogFile
+            referenceUrl 'hibernate:spring:net.generica.katalog.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
+            defaultSchemaName ''
+            logLevel 'debug'
+            classpath "$buildDir/classes/java/main"
+        }
+    }
+
+    runList = project.ext.runList
+}
 
 configurations {
     providedRuntime
@@ -145,20 +179,32 @@ dependencies {
     compile "net.logstash.logback:logstash-logback-encoder"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-hppc"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-hibernate5"
     compile "com.fasterxml.jackson.core:jackson-annotations"
     compile "com.fasterxml.jackson.core:jackson-databind"
     compile "com.fasterxml.jackson.module:jackson-module-afterburner"
     compile "javax.cache:cache-api"
+    compile "org.hibernate:hibernate-core"
+    compile "com.zaxxer:HikariCP"
     compile "org.apache.commons:commons-lang3"
     compile "commons-io:commons-io"
     compile "javax.transaction:javax.transaction-api"
     compile "org.ehcache:ehcache"
+    compile "org.hibernate:hibernate-jcache"
+    compile "org.hibernate:hibernate-entitymanager"
+    compile "org.hibernate:hibernate-envers"
+    compile "org.hibernate.validator:hibernate-validator"
+    compile "org.liquibase:liquibase-core"
+    compile "com.mattbertolini:liquibase-slf4j"
+    liquibaseRuntime "org.liquibase:liquibase-core"
+    liquibaseRuntime "org.liquibase.ext:liquibase-hibernate5:${liquibase_hibernate5_version}"
+    liquibaseRuntime sourceSets.main.compileClasspath
     compile "org.springframework.boot:spring-boot-loader-tools"
     compile "org.springframework.boot:spring-boot-starter-mail"
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-starter-aop"
-    compile "org.springframework.boot:spring-boot-starter-data-mongodb"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "org.springframework.boot:spring-boot-starter-security"
     compile ("org.springframework.boot:spring-boot-starter-web") {
         exclude module: 'spring-boot-starter-tomcat'
@@ -173,13 +219,15 @@ dependencies {
     compile "io.jsonwebtoken:jjwt-api"
     runtime "io.jsonwebtoken:jjwt-impl"
     runtime "io.jsonwebtoken:jjwt-jackson"
-    compile "com.github.mongobee:mongobee"
     compile ("io.springfox:springfox-swagger2") {
         exclude module: 'mapstruct'
     }
     compile "io.springfox:springfox-bean-validators"
+    compile "org.postgresql:postgresql"
+    liquibaseRuntime "org.postgresql:postgresql"
     compile "org.mapstruct:mapstruct-jdk8:${mapstruct_version}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
+    annotationProcessor "org.hibernate:hibernate-jpamodelgen"
     annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor") {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
@@ -192,8 +240,10 @@ dependencies {
     testCompile "org.assertj:assertj-core"
     testCompile "junit:junit"
     testCompile "org.mockito:mockito-core"
-    testCompile "de.flapdoodle.embed:de.flapdoodle.embed.mongo"
+    testCompile "com.mattbertolini:liquibase-slf4j"
     testCompile "org.hamcrest:hamcrest-library"
+    testCompile "com.h2database:h2"
+    liquibaseRuntime "com.h2database:h2"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 

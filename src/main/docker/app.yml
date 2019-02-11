@@ -5,12 +5,11 @@ services:
         environment:
             - _JAVA_OPTIONS=-Xmx512m -Xms256m
             - SPRING_PROFILES_ACTIVE=prod,swagger
-            - SPRING_DATA_MONGODB_URI=mongodb://katalog-mongodb:27017
-            - SPRING_DATA_MONGODB_DATABASE=katalog
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://katalog-postgresql:5432/katalog
             - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
         ports:
             - 8080:8080
-    katalog-mongodb:
+    katalog-postgresql:
         extends:
-            file: mongodb.yml
-            service: katalog-mongodb
+            file: postgresql.yml
+            service: katalog-postgresql

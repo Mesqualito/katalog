@@ -25,10 +25,27 @@ spring:
             enabled: false
         livereload:
             enabled: false
-    data:
-        mongodb:
-            uri: mongodb://localhost:27017
-            database: katalog
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:postgresql://localhost:5432/katalog
+        username: katalog
+        password:
+        hikari:
+            poolName: Hikari
+            auto-commit: false
+    jpa:
+        database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
+        database: POSTGRESQL
+        show-sql: false
+        properties:
+            hibernate.id.new_generator_mappings: true
+            hibernate.connection.provider_disables_autocommit: true
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.BeanClassLoaderAwareJCacheRegionFactory
+    liquibase:
+        contexts: prod
     mail:
         host: localhost
         port: 25
@@ -86,7 +103,7 @@ jhipster:
                 # - In the JHipster Registry (which includes a Spring Cloud Config server)
                 # - In a separate `application-prod.yml` file, in the same folder as your executable WAR file
                 # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-                base64-secret: Yzg1OWUzMzgyMmJhNzM2YmY3MjRmZTIzYzIyNDQ1YjYyMDQyNzkwMTJiZjRlZDEzOWJlZDQ4YWVhYzNlNzY1ZjZkZjMzNjgxNDRlYTI3ZjFlZWRlODJmMWRmYzVkMGQwOTkxNzFiMTBhMTljMzg3OTM1MzY1MWY4ZTQ0YjBiYzE=
+                base64-secret: NWRhNWQ1OGNjYzhjMzYzZjQ0MDU1ZWM3NTMxMzY4MjRiMGZkYzc1NWJhMzE1YWNkMGE1ZWY2MGM2NmIwYzY2OWFjNDdlZTJlZjhhZDE4MjQ3MzA4M2YyNWY4YWJjMjcyNzJhNWEyNDM0MDRhMDg5NTYyYTA5ZjY2OWYzOGUyM2Y=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
