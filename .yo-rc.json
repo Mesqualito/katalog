@@ -22,7 +22,7 @@
         "serviceDiscoveryType": false,
         "buildTool": "gradle",
         "enableSwaggerCodegen": false,
-        "jwtSecretKey": "ZDY0OWNiYTEyZmJjNzk3NzMzZmRlNmFhZmNhNzEyMDc5MDZjYzkzZDhmMzgyMDIxYTY0NmJkN2MyZTVkNGVhNjQ3NDhjNmVjYmEzYTFiMGU0ZDViOWNiNjRkYWY4NWIzMWM4M2U2NTk3YjY3NjRhMjViYzFkOWNlMDI3MjZmNWM=",
+        "jwtSecretKey": "Yzg1OWUzMzgyMmJhNzM2YmY3MjRmZTIzYzIyNDQ1YjYyMDQyNzkwMTJiZjRlZDEzOWJlZDQ4YWVhYzNlNzY1ZjZkZjMzNjgxNDRlYTI3ZjFlZWRlODJmMWRmYzVkMGQwOTkxNzFiMTBhMTljMzg3OTM1MzY1MWY4ZTQ0YjBiYzE=",
         "clientFramework": "angularX",
         "useSass": true,
         "clientPackageManager": "npm",
