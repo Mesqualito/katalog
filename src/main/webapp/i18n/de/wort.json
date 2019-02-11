@@ -1,0 +1,27 @@
+{
+    "katalogApp": {
+        "wort": {
+            "home": {
+                "title": "Worts",
+                "createLabel": "Wort erstellen",
+                "createOrEditLabel": "Wort erstellen oder bearbeiten"
+            },
+            "created": "Wort erstellt mit ID {{ param }}",
+            "updated": "Wort aktualisiert mit ID {{ param }}",
+            "deleted": "Wort gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Wort {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Wort"
+            },
+            "wort": "Wort",
+            "sprachCode": "Sprach Code",
+            "gruppenCode": "Gruppen Code",
+            "wort": "Wort",
+            "wort": "Wort",
+            "wort": "Wort",
+            "wort": "Wort"
+        }
+    }
+}

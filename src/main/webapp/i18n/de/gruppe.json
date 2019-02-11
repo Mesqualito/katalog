@@ -1,0 +1,22 @@
+{
+    "katalogApp": {
+        "gruppe": {
+            "home": {
+                "title": "Gruppes",
+                "createLabel": "Gruppe erstellen",
+                "createOrEditLabel": "Gruppe erstellen oder bearbeiten"
+            },
+            "created": "Gruppe erstellt mit ID {{ param }}",
+            "updated": "Gruppe aktualisiert mit ID {{ param }}",
+            "deleted": "Gruppe gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Gruppe {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Gruppe"
+            },
+            "gruppenCode": "Gruppen Code",
+            "gruppenBezeichnung": "Gruppen Bezeichnung"
+        }
+    }
+}

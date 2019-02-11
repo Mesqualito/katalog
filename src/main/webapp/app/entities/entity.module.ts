@@ -4,6 +4,106 @@ import { RouterModule } from '@angular/router';
 @NgModule({
     imports: [
         RouterModule.forChild([
+            {
+                path: 'sprache',
+                loadChildren: './sprache/sprache.module#KatalogSpracheModule'
+            },
+            {
+                path: 'gruppe',
+                loadChildren: './gruppe/gruppe.module#KatalogGruppeModule'
+            },
+            {
+                path: 'wort',
+                loadChildren: './wort/wort.module#KatalogWortModule'
+            },
+            {
+                path: 'bezeichnung',
+                loadChildren: './bezeichnung/bezeichnung.module#KatalogBezeichnungModule'
+            },
+            {
+                path: 'ausdruck',
+                loadChildren: './ausdruck/ausdruck.module#KatalogAusdruckModule'
+            },
+            {
+                path: 'sprache',
+                loadChildren: './sprache/sprache.module#KatalogSpracheModule'
+            },
+            {
+                path: 'gruppe',
+                loadChildren: './gruppe/gruppe.module#KatalogGruppeModule'
+            },
+            {
+                path: 'single',
+                loadChildren: './single/single.module#KatalogSingleModule'
+            },
+            {
+                path: 'bezeichnung',
+                loadChildren: './bezeichnung/bezeichnung.module#KatalogBezeichnungModule'
+            },
+            {
+                path: 'ausdruck',
+                loadChildren: './ausdruck/ausdruck.module#KatalogAusdruckModule'
+            },
+            {
+                path: 'sprache',
+                loadChildren: './sprache/sprache.module#KatalogSpracheModule'
+            },
+            {
+                path: 'gruppe',
+                loadChildren: './gruppe/gruppe.module#KatalogGruppeModule'
+            },
+            {
+                path: 'single',
+                loadChildren: './single/single.module#KatalogSingleModule'
+            },
+            {
+                path: 'bezeichnung',
+                loadChildren: './bezeichnung/bezeichnung.module#KatalogBezeichnungModule'
+            },
+            {
+                path: 'ausdruck',
+                loadChildren: './ausdruck/ausdruck.module#KatalogAusdruckModule'
+            },
+            {
+                path: 'sprache',
+                loadChildren: './sprache/sprache.module#KatalogSpracheModule'
+            },
+            {
+                path: 'gruppe',
+                loadChildren: './gruppe/gruppe.module#KatalogGruppeModule'
+            },
+            {
+                path: 'single',
+                loadChildren: './single/single.module#KatalogSingleModule'
+            },
+            {
+                path: 'bezeichnung',
+                loadChildren: './bezeichnung/bezeichnung.module#KatalogBezeichnungModule'
+            },
+            {
+                path: 'ausdruck',
+                loadChildren: './ausdruck/ausdruck.module#KatalogAusdruckModule'
+            },
+            {
+                path: 'sprache',
+                loadChildren: './sprache/sprache.module#KatalogSpracheModule'
+            },
+            {
+                path: 'gruppe',
+                loadChildren: './gruppe/gruppe.module#KatalogGruppeModule'
+            },
+            {
+                path: 'single',
+                loadChildren: './single/single.module#KatalogSingleModule'
+            },
+            {
+                path: 'bezeichnung',
+                loadChildren: './bezeichnung/bezeichnung.module#KatalogBezeichnungModule'
+            },
+            {
+                path: 'ausdruck',
+                loadChildren: './ausdruck/ausdruck.module#KatalogAusdruckModule'
+            }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])
     ],
