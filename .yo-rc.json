@@ -1,38 +1,41 @@
 {
-    "generator-jhipster": {
-        "promptValues": {
-            "packageName": "net.generica.katalog",
-            "nativeLanguage": "de"
-        },
-        "jhipsterVersion": "5.8.1",
-        "applicationType": "monolith",
-        "baseName": "katalog",
-        "packageName": "net.generica.katalog",
-        "packageFolder": "net/generica/katalog",
-        "serverPort": "8080",
-        "authenticationType": "jwt",
-        "cacheProvider": "ehcache",
-        "enableHibernateCache": true,
-        "websocket": false,
-        "databaseType": "sql",
-        "devDatabaseType": "h2Disk",
-        "prodDatabaseType": "postgresql",
-        "searchEngine": false,
-        "messageBroker": false,
-        "serviceDiscoveryType": false,
-        "buildTool": "gradle",
-        "enableSwaggerCodegen": false,
-        "jwtSecretKey": "NWRhNWQ1OGNjYzhjMzYzZjQ0MDU1ZWM3NTMxMzY4MjRiMGZkYzc1NWJhMzE1YWNkMGE1ZWY2MGM2NmIwYzY2OWFjNDdlZTJlZjhhZDE4MjQ3MzA4M2YyNWY4YWJjMjcyNzJhNWEyNDM0MDRhMDg5NTYyYTA5ZjY2OWYzOGUyM2Y=",
-        "clientFramework": "angularX",
-        "useSass": true,
-        "clientPackageManager": "npm",
-        "testFrameworks": [],
-        "jhiPrefix": "jhi",
-        "entitySuffix": "",
-        "dtoSuffix": "DTO",
-        "otherModules": [],
-        "enableTranslation": true,
-        "nativeLanguage": "de",
-        "languages": ["de", "en"]
-    }
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "net.generica.katalog",
+      "nativeLanguage": "de"
+    },
+    "jhipsterVersion": "5.8.1",
+    "applicationType": "monolith",
+    "baseName": "katalog",
+    "packageName": "net.generica.katalog",
+    "packageFolder": "net/generica/katalog",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NWRhNWQ1OGNjYzhjMzYzZjQ0MDU1ZWM3NTMxMzY4MjRiMGZkYzc1NWJhMzE1YWNkMGE1ZWY2MGM2NmIwYzY2OWFjNDdlZTJlZjhhZDE4MjQ3MzA4M2YyNWY4YWJjMjcyNzJhNWEyNDM0MDRhMDg5NTYyYTA5ZjY2OWYzOGUyM2Y=",
+    "clientFramework": "angularX",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "nativeLanguage": "de",
+    "languages": [
+      "de",
+      "en"
+    ]
+  }
 }
