@@ -20,7 +20,7 @@ export class GruppeDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id: string) {
+    confirmDelete(id: number) {
         this.gruppeService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'gruppeListModification',

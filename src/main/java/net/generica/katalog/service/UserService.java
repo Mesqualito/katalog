@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
  * Service class for managing users.
  */
 @Service
+@Transactional
 public class UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
@@ -55,7 +57,6 @@ public class UserService {
                 // activate given user for the registration key.
                 user.setActivated(true);
                 user.setActivationKey(null);
-                userRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Activated user: {}", user);
                 return user;
@@ -70,7 +71,6 @@ public class UserService {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
-                userRepository.save(user);
                 this.clearUserCaches(user);
                 return user;
             });
@@ -82,7 +82,6 @@ public class UserService {
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(Instant.now());
-                userRepository.save(user);
                 this.clearUserCaches(user);
                 return user;
             });
@@ -129,6 +128,7 @@ public class UserService {
              return false;
         }
         userRepository.delete(existingUser);
+        userRepository.flush();
         this.clearUserCaches(existingUser);
         return true;
     }
@@ -182,7 +182,6 @@ public class UserService {
                 user.setEmail(email.toLowerCase());
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
-                userRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
             });
@@ -215,7 +214,6 @@ public class UserService {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
-                userRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
                 return user;
@@ -241,26 +239,29 @@ public class UserService {
                 }
                 String encryptedPassword = passwordEncoder.encode(newPassword);
                 user.setPassword(encryptedPassword);
-                userRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed password for User: {}", user);
             });
     }
 
+    @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
     }
 
+    @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneByLogin(login);
+        return userRepository.findOneWithAuthoritiesByLogin(login);
     }
 
-    public Optional<User> getUserWithAuthorities(String id) {
-        return userRepository.findById(id);
+    @Transactional(readOnly = true)
+    public Optional<User> getUserWithAuthorities(Long id) {
+        return userRepository.findOneWithAuthoritiesById(id);
     }
 
+    @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin);
+        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
     }
 
     /**

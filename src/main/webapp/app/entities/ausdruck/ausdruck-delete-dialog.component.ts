@@ -20,7 +20,7 @@ export class AusdruckDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id: string) {
+    confirmDelete(id: number) {
         this.ausdruckService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'ausdruckListModification',

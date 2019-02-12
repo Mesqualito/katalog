@@ -51,7 +51,7 @@ describe('Component Tests', () => {
             spyOn(service, 'query').and.returnValue(
                 of(
                     new HttpResponse({
-                        body: [new Bezeichnung('123')],
+                        body: [new Bezeichnung(123)],
                         headers
                     })
                 )
@@ -62,7 +62,7 @@ describe('Component Tests', () => {
 
             // THEN
             expect(service.query).toHaveBeenCalled();
-            expect(comp.bezeichnungs[0]).toEqual(jasmine.objectContaining({ id: '123' }));
+            expect(comp.bezeichnungs[0]).toEqual(jasmine.objectContaining({ id: 123 }));
         });
 
         it('should load a page', () => {
@@ -71,7 +71,7 @@ describe('Component Tests', () => {
             spyOn(service, 'query').and.returnValue(
                 of(
                     new HttpResponse({
-                        body: [new Bezeichnung('123')],
+                        body: [new Bezeichnung(123)],
                         headers
                     })
                 )
@@ -82,7 +82,7 @@ describe('Component Tests', () => {
 
             // THEN
             expect(service.query).toHaveBeenCalled();
-            expect(comp.bezeichnungs[0]).toEqual(jasmine.objectContaining({ id: '123' }));
+            expect(comp.bezeichnungs[0]).toEqual(jasmine.objectContaining({ id: 123 }));
         });
 
         it('should not load a page is the page is the same as the previous page', () => {
@@ -101,7 +101,7 @@ describe('Component Tests', () => {
             spyOn(service, 'query').and.returnValue(
                 of(
                     new HttpResponse({
-                        body: [new Bezeichnung('123')],
+                        body: [new Bezeichnung(123)],
                         headers
                     })
                 )
@@ -114,7 +114,7 @@ describe('Component Tests', () => {
             // THEN
             expect(comp.page).toEqual(0);
             expect(service.query).toHaveBeenCalledTimes(2);
-            expect(comp.bezeichnungs[0]).toEqual(jasmine.objectContaining({ id: '123' }));
+            expect(comp.bezeichnungs[0]).toEqual(jasmine.objectContaining({ id: 123 }));
         });
         it('should calculate the sort attribute for an id', () => {
             // WHEN

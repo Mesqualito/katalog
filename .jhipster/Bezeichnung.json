@@ -12,29 +12,29 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "relationshipName": "sprachCode",
+            "relationshipName": "sprache",
             "otherEntityName": "sprache",
-            "otherEntityField": "id",
+            "otherEntityField": "sprache",
             "ownerSide": true,
             "otherEntityRelationshipName": "bezeichnung"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "gruppenCode",
+            "relationshipName": "gruppe",
             "otherEntityName": "gruppe",
-            "otherEntityField": "id",
+            "otherEntityField": "gruppe",
             "otherEntityRelationshipName": "bezeichnung"
         },
         {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "bezeichnung",
-            "relationshipName": "single",
-            "otherEntityName": "single",
-            "otherEntityField": "bezeichnung",
+            "relationshipName": "einzelwort",
+            "otherEntityName": "wort",
+            "otherEntityField": "wort",
             "ownerSide": true
         }
     ],
-    "changelogDate": "20190211102328",
+    "changelogDate": "20190211170350",
     "entityTableName": "bezeichnung",
     "dto": "no",
     "pagination": "pagination",

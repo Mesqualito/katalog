@@ -13,8 +13,27 @@
             "fieldType": "String"
         }
     ],
-    "relationships": [],
-    "changelogDate": "20190211102326",
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "single",
+            "otherEntityName": "wort",
+            "otherEntityRelationshipName": "gruppe"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "bezeichnung",
+            "otherEntityName": "bezeichnung",
+            "otherEntityRelationshipName": "gruppe"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "ausdruck",
+            "otherEntityName": "ausdruck",
+            "otherEntityRelationshipName": "gruppe"
+        }
+    ],
+    "changelogDate": "20190211170348",
     "entityTableName": "gruppe",
     "dto": "no",
     "pagination": "infinite-scroll",

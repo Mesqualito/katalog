@@ -16,23 +16,23 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="katalogApp.ausdruck.sprachCode" for="field_sprachCode">Sprach Code</label>
-                    <select class="form-control" id="field_sprachCode" name="sprachCode" [(ngModel)]="ausdruck.sprachCode">
+                    <label class="form-control-label" jhiTranslate="katalogApp.ausdruck.sprache" for="field_sprache">Sprache</label>
+                    <select class="form-control" id="field_sprache" name="sprache" [(ngModel)]="ausdruck.sprache">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="spracheOption.id === ausdruck.sprachCode?.id ? ausdruck.sprachCode : spracheOption" *ngFor="let spracheOption of sprachcodes; trackBy: trackSpracheById">{{spracheOption.id}}</option>
+                        <option [ngValue]="spracheOption.id === ausdruck.sprache?.id ? ausdruck.sprache : spracheOption" *ngFor="let spracheOption of spraches; trackBy: trackSpracheById">{{spracheOption.sprache}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="katalogApp.ausdruck.gruppenCode" for="field_gruppenCode">Gruppen Code</label>
-                    <select class="form-control" id="field_gruppenCode" name="gruppenCode" [(ngModel)]="ausdruck.gruppenCode" >
+                    <label class="form-control-label" jhiTranslate="katalogApp.ausdruck.gruppe" for="field_gruppe">Gruppe</label>
+                    <select class="form-control" id="field_gruppe" name="gruppe" [(ngModel)]="ausdruck.gruppe" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="gruppeOption.id === ausdruck.gruppenCode?.id ? ausdruck.gruppenCode : gruppeOption" *ngFor="let gruppeOption of gruppes; trackBy: trackGruppeById">{{gruppeOption.id}}</option>
+                        <option [ngValue]="gruppeOption.id === ausdruck.gruppe?.id ? ausdruck.gruppe : gruppeOption" *ngFor="let gruppeOption of gruppes; trackBy: trackGruppeById">{{gruppeOption.gruppe}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label jhiTranslate="katalogApp.ausdruck.single" for="field_single">Single</label>
-                    <select class="form-control" id="field_single" multiple name="single" [(ngModel)]="ausdruck.singles">
-                        <option [ngValue]="getSelected(ausdruck.singles, singleOption)" *ngFor="let singleOption of singles; trackBy: trackSingleById">{{singleOption.ausdruck}}</option>
+                    <label jhiTranslate="katalogApp.ausdruck.einzelwort" for="field_einzelwort">Einzelwort</label>
+                    <select class="form-control" id="field_einzelwort" multiple name="einzelwort" [(ngModel)]="ausdruck.einzelworts">
+                        <option [ngValue]="getSelected(ausdruck.einzelworts, wortOption)" *ngFor="let wortOption of worts; trackBy: trackWortById">{{wortOption.wort}}</option>
                     </select>
                 </div>
             </div>

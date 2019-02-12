@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
  * Service Implementation for managing Wort.
  */
 @Service
+@Transactional
 public class WortServiceImpl implements WortService {
 
     private final Logger log = LoggerFactory.getLogger(WortServiceImpl.class);
@@ -45,6 +47,7 @@ public class WortServiceImpl implements WortService {
      * @return the list of entities
      */
     @Override
+    @Transactional(readOnly = true)
     public Page<Wort> findAll(Pageable pageable) {
         log.debug("Request to get all Worts");
         return wortRepository.findAll(pageable);
@@ -67,7 +70,8 @@ public class WortServiceImpl implements WortService {
      * @return the entity
      */
     @Override
-    public Optional<Wort> findOne(String id) {
+    @Transactional(readOnly = true)
+    public Optional<Wort> findOne(Long id) {
         log.debug("Request to get Wort : {}", id);
         return wortRepository.findOneWithEagerRelationships(id);
     }
@@ -78,7 +82,7 @@ public class WortServiceImpl implements WortService {
      * @param id the id of the entity
      */
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
         log.debug("Request to delete Wort : {}", id);        wortRepository.deleteById(id);
     }
 }

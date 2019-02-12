@@ -1,10 +1,10 @@
 package net.generica.katalog.domain;
 
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
@@ -13,27 +13,31 @@ import java.util.Objects;
 /**
  * A Sprache.
  */
-@Document(collection = "sprache")
+@Entity
+@Table(name = "sprache")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Sprache implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    private Long id;
 
     @NotNull
-    @Field("sprach_code")
+    @Column(name = "sprach_code", nullable = false)
     private String sprachCode;
 
-    @Field("sprach_bezeichnung")
+    @Column(name = "sprach_bezeichnung")
     private String sprachBezeichnung;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

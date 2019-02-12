@@ -99,7 +99,7 @@ public class GruppeResource {
      * @return the ResponseEntity with status 200 (OK) and with body the gruppe, or with status 404 (Not Found)
      */
     @GetMapping("/gruppes/{id}")
-    public ResponseEntity<Gruppe> getGruppe(@PathVariable String id) {
+    public ResponseEntity<Gruppe> getGruppe(@PathVariable Long id) {
         log.debug("REST request to get Gruppe : {}", id);
         Optional<Gruppe> gruppe = gruppeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(gruppe);
@@ -112,9 +112,9 @@ public class GruppeResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/gruppes/{id}")
-    public ResponseEntity<Void> deleteGruppe(@PathVariable String id) {
+    public ResponseEntity<Void> deleteGruppe(@PathVariable Long id) {
         log.debug("REST request to delete Gruppe : {}", id);
         gruppeService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

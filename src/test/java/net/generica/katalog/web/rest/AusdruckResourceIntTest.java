@@ -22,8 +22,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +71,9 @@ public class AusdruckResourceIntTest {
     private ExceptionTranslator exceptionTranslator;
 
     @Autowired
+    private EntityManager em;
+
+    @Autowired
     private Validator validator;
 
     private MockMvc restAusdruckMockMvc;
@@ -93,7 +98,7 @@ public class AusdruckResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Ausdruck createEntity() {
+    public static Ausdruck createEntity(EntityManager em) {
         Ausdruck ausdruck = new Ausdruck()
             .ausdruck(DEFAULT_AUSDRUCK);
         return ausdruck;
@@ -101,11 +106,11 @@ public class AusdruckResourceIntTest {
 
     @Before
     public void initTest() {
-        ausdruckRepository.deleteAll();
-        ausdruck = createEntity();
+        ausdruck = createEntity(em);
     }
 
     @Test
+    @Transactional
     public void createAusdruck() throws Exception {
         int databaseSizeBeforeCreate = ausdruckRepository.findAll().size();
 
@@ -123,11 +128,12 @@ public class AusdruckResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void createAusdruckWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = ausdruckRepository.findAll().size();
 
         // Create the Ausdruck with an existing ID
-        ausdruck.setId("existing_id");
+        ausdruck.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAusdruckMockMvc.perform(post("/api/ausdrucks")
@@ -141,15 +147,16 @@ public class AusdruckResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void getAllAusdrucks() throws Exception {
         // Initialize the database
-        ausdruckRepository.save(ausdruck);
+        ausdruckRepository.saveAndFlush(ausdruck);
 
         // Get all the ausdruckList
         restAusdruckMockMvc.perform(get("/api/ausdrucks?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(ausdruck.getId())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(ausdruck.getId().intValue())))
             .andExpect(jsonPath("$.[*].ausdruck").value(hasItem(DEFAULT_AUSDRUCK.toString())));
     }
     
@@ -187,19 +194,21 @@ public class AusdruckResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void getAusdruck() throws Exception {
         // Initialize the database
-        ausdruckRepository.save(ausdruck);
+        ausdruckRepository.saveAndFlush(ausdruck);
 
         // Get the ausdruck
         restAusdruckMockMvc.perform(get("/api/ausdrucks/{id}", ausdruck.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(ausdruck.getId()))
+            .andExpect(jsonPath("$.id").value(ausdruck.getId().intValue()))
             .andExpect(jsonPath("$.ausdruck").value(DEFAULT_AUSDRUCK.toString()));
     }
 
     @Test
+    @Transactional
     public void getNonExistingAusdruck() throws Exception {
         // Get the ausdruck
         restAusdruckMockMvc.perform(get("/api/ausdrucks/{id}", Long.MAX_VALUE))
@@ -207,6 +216,7 @@ public class AusdruckResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void updateAusdruck() throws Exception {
         // Initialize the database
         ausdruckService.save(ausdruck);
@@ -215,6 +225,8 @@ public class AusdruckResourceIntTest {
 
         // Update the ausdruck
         Ausdruck updatedAusdruck = ausdruckRepository.findById(ausdruck.getId()).get();
+        // Disconnect from session so that the updates on updatedAusdruck are not directly saved in db
+        em.detach(updatedAusdruck);
         updatedAusdruck
             .ausdruck(UPDATED_AUSDRUCK);
 
@@ -231,6 +243,7 @@ public class AusdruckResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void updateNonExistingAusdruck() throws Exception {
         int databaseSizeBeforeUpdate = ausdruckRepository.findAll().size();
 
@@ -248,6 +261,7 @@ public class AusdruckResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void deleteAusdruck() throws Exception {
         // Initialize the database
         ausdruckService.save(ausdruck);
@@ -265,14 +279,15 @@ public class AusdruckResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Ausdruck.class);
         Ausdruck ausdruck1 = new Ausdruck();
-        ausdruck1.setId("id1");
+        ausdruck1.setId(1L);
         Ausdruck ausdruck2 = new Ausdruck();
         ausdruck2.setId(ausdruck1.getId());
         assertThat(ausdruck1).isEqualTo(ausdruck2);
-        ausdruck2.setId("id2");
+        ausdruck2.setId(2L);
         assertThat(ausdruck1).isNotEqualTo(ausdruck2);
         ausdruck1.setId(null);
         assertThat(ausdruck1).isNotEqualTo(ausdruck2);

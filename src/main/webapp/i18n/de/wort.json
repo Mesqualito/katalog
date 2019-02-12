@@ -15,13 +15,13 @@
             "detail": {
                 "title": "Wort"
             },
+            "eWort": "E Wort",
+            "sprache": "Sprache",
+            "gruppe": "Gruppe",
+            "einzelwort": "Einzelwort",
             "wort": "Wort",
-            "sprachCode": "Sprach Code",
-            "gruppenCode": "Gruppen Code",
-            "wort": "Wort",
-            "wort": "Wort",
-            "wort": "Wort",
-            "wort": "Wort"
+            "bezeichnung": "Bezeichnung",
+            "ausdruck": "Ausdruck"
         }
     }
 }

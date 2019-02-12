@@ -5,25 +5,25 @@ import { IBezeichnung } from 'app/shared/model/bezeichnung.model';
 import { IAusdruck } from 'app/shared/model/ausdruck.model';
 
 export interface IWort {
-    id?: string;
-    wort?: string;
-    sprachCode?: ISprache;
-    gruppenCodes?: IGruppe[];
+    id?: number;
+    eWort?: string;
+    sprache?: ISprache;
+    gruppe?: IGruppe;
+    einzelworts?: IWort[];
     worts?: IWort[];
-    worts?: IWort[];
-    worts?: IBezeichnung[];
-    worts?: IAusdruck[];
+    bezeichnungs?: IBezeichnung[];
+    ausdrucks?: IAusdruck[];
 }
 
 export class Wort implements IWort {
     constructor(
-        public id?: string,
-        public wort?: string,
-        public sprachCode?: ISprache,
-        public gruppenCodes?: IGruppe[],
+        public id?: number,
+        public eWort?: string,
+        public sprache?: ISprache,
+        public gruppe?: IGruppe,
+        public einzelworts?: IWort[],
         public worts?: IWort[],
-        public worts?: IWort[],
-        public worts?: IBezeichnung[],
-        public worts?: IAusdruck[]
+        public bezeichnungs?: IBezeichnung[],
+        public ausdrucks?: IAusdruck[]
     ) {}
 }

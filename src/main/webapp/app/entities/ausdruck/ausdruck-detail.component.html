@@ -9,22 +9,22 @@
                 <dd>
                     <span>{{ausdruck.ausdruck}}</span>
                 </dd>
-                <dt><span jhiTranslate="katalogApp.ausdruck.sprachCode">Sprach Code</span></dt>
+                <dt><span jhiTranslate="katalogApp.ausdruck.sprache">Sprache</span></dt>
                 <dd>
-                    <div *ngIf="ausdruck.sprachCode">
-                        <a [routerLink]="['/sprache', ausdruck.sprachCode?.id, 'view']">{{ausdruck.sprachCode?.id}}</a>
+                    <div *ngIf="ausdruck.sprache">
+                        <a [routerLink]="['/sprache', ausdruck.sprache?.id, 'view']">{{ausdruck.sprache?.sprache}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="katalogApp.ausdruck.gruppenCode">Gruppen Code</span></dt>
+                <dt><span jhiTranslate="katalogApp.ausdruck.gruppe">Gruppe</span></dt>
                 <dd>
-                    <div *ngIf="ausdruck.gruppenCode">
-                        <a [routerLink]="['/gruppe', ausdruck.gruppenCode?.id, 'view']">{{ausdruck.gruppenCode?.id}}</a>
+                    <div *ngIf="ausdruck.gruppe">
+                        <a [routerLink]="['/gruppe', ausdruck.gruppe?.id, 'view']">{{ausdruck.gruppe?.gruppe}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="katalogApp.ausdruck.single">Single</span></dt>
+                <dt><span jhiTranslate="katalogApp.ausdruck.einzelwort">Einzelwort</span></dt>
                 <dd>
-                    <span *ngFor="let single of ausdruck.singles; let last = last">
-                        <a [routerLink]="['/single', single?.id, 'view' ]">{{single.ausdruck}}</a>{{last ? '' : ', '}}
+                    <span *ngFor="let einzelwort of ausdruck.einzelworts; let last = last">
+                        <a [routerLink]="['/wort', einzelwort?.id, 'view' ]">{{einzelwort.wort}}</a>{{last ? '' : ', '}}
                     </span>
                 </dd>
             </dl>

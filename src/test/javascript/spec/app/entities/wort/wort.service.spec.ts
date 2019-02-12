@@ -21,14 +21,14 @@ describe('Service Tests', () => {
             service = injector.get(WortService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Wort('ID', 'AAAAAAA');
+            elemDefault = new Wort(0, 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
             it('should find an element', async () => {
                 const returnedFromService = Object.assign({}, elemDefault);
                 service
-                    .find('123')
+                    .find(123)
                     .pipe(take(1))
                     .subscribe(resp => expect(resp).toMatchObject({ body: elemDefault }));
 
@@ -39,7 +39,7 @@ describe('Service Tests', () => {
             it('should create a Wort', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        id: 'ID'
+                        id: 0
                     },
                     elemDefault
                 );
@@ -55,7 +55,7 @@ describe('Service Tests', () => {
             it('should update a Wort', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        wort: 'BBBBBB'
+                        eWort: 'BBBBBB'
                     },
                     elemDefault
                 );
@@ -72,7 +72,7 @@ describe('Service Tests', () => {
             it('should return a list of Wort', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        wort: 'BBBBBB'
+                        eWort: 'BBBBBB'
                     },
                     elemDefault
                 );
@@ -90,7 +90,7 @@ describe('Service Tests', () => {
             });
 
             it('should delete a Wort', async () => {
-                const rxPromise = service.delete('123').subscribe(resp => expect(resp.ok));
+                const rxPromise = service.delete(123).subscribe(resp => expect(resp.ok));
 
                 const req = httpMock.expectOne({ method: 'DELETE' });
                 req.flush({ status: 200 });

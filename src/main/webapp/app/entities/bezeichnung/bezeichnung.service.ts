@@ -23,7 +23,7 @@ export class BezeichnungService {
         return this.http.put<IBezeichnung>(this.resourceUrl, bezeichnung, { observe: 'response' });
     }
 
-    find(id: string): Observable<EntityResponseType> {
+    find(id: number): Observable<EntityResponseType> {
         return this.http.get<IBezeichnung>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
@@ -32,7 +32,7 @@ export class BezeichnungService {
         return this.http.get<IBezeichnung[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
-    delete(id: string): Observable<HttpResponse<any>> {
+    delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 }

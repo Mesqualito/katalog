@@ -16,9 +16,9 @@
                 "title": "Ausdruck"
             },
             "ausdruck": "Ausdruck",
-            "sprachCode": "Sprach Code",
-            "gruppenCode": "Gruppen Code",
-            "single": "Single"
+            "sprache": "Sprache",
+            "gruppe": "Gruppe",
+            "einzelwort": "Einzelwort"
         }
     }
 }

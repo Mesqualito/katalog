@@ -30,7 +30,7 @@ describe('Component Tests', () => {
         describe('save', () => {
             it('Should call update service on save for existing entity', fakeAsync(() => {
                 // GIVEN
-                const entity = new Gruppe('123');
+                const entity = new Gruppe(123);
                 spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
                 comp.gruppe = entity;
                 // WHEN

@@ -41,12 +41,12 @@ public interface WortService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Wort> findOne(String id);
+    Optional<Wort> findOne(Long id);
 
     /**
      * Delete the "id" wort.
      *
      * @param id the id of the entity
      */
-    void delete(String id);
+    void delete(Long id);
 }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
  * Service Implementation for managing Gruppe.
  */
 @Service
+@Transactional
 public class GruppeServiceImpl implements GruppeService {
 
     private final Logger log = LoggerFactory.getLogger(GruppeServiceImpl.class);
@@ -45,6 +47,7 @@ public class GruppeServiceImpl implements GruppeService {
      * @return the list of entities
      */
     @Override
+    @Transactional(readOnly = true)
     public Page<Gruppe> findAll(Pageable pageable) {
         log.debug("Request to get all Gruppes");
         return gruppeRepository.findAll(pageable);
@@ -58,7 +61,8 @@ public class GruppeServiceImpl implements GruppeService {
      * @return the entity
      */
     @Override
-    public Optional<Gruppe> findOne(String id) {
+    @Transactional(readOnly = true)
+    public Optional<Gruppe> findOne(Long id) {
         log.debug("Request to get Gruppe : {}", id);
         return gruppeRepository.findById(id);
     }
@@ -69,7 +73,7 @@ public class GruppeServiceImpl implements GruppeService {
      * @param id the id of the entity
      */
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
         log.debug("Request to delete Gruppe : {}", id);        gruppeRepository.deleteById(id);
     }
 }

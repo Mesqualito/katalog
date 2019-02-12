@@ -41,12 +41,12 @@ public interface AusdruckService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Ausdruck> findOne(String id);
+    Optional<Ausdruck> findOne(Long id);
 
     /**
      * Delete the "id" ausdruck.
      *
      * @param id the id of the entity
      */
-    void delete(String id);
+    void delete(Long id);
 }

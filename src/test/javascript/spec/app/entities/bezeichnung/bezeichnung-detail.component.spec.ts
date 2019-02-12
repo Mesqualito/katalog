@@ -11,7 +11,7 @@ describe('Component Tests', () => {
     describe('Bezeichnung Management Detail Component', () => {
         let comp: BezeichnungDetailComponent;
         let fixture: ComponentFixture<BezeichnungDetailComponent>;
-        const route = ({ data: of({ bezeichnung: new Bezeichnung('123') }) } as any) as ActivatedRoute;
+        const route = ({ data: of({ bezeichnung: new Bezeichnung(123) }) } as any) as ActivatedRoute;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
                 comp.ngOnInit();
 
                 // THEN
-                expect(comp.bezeichnung).toEqual(jasmine.objectContaining({ id: '123' }));
+                expect(comp.bezeichnung).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });

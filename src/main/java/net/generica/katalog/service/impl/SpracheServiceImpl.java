@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
  * Service Implementation for managing Sprache.
  */
 @Service
+@Transactional
 public class SpracheServiceImpl implements SpracheService {
 
     private final Logger log = LoggerFactory.getLogger(SpracheServiceImpl.class);
@@ -45,6 +47,7 @@ public class SpracheServiceImpl implements SpracheService {
      * @return the list of entities
      */
     @Override
+    @Transactional(readOnly = true)
     public Page<Sprache> findAll(Pageable pageable) {
         log.debug("Request to get all Spraches");
         return spracheRepository.findAll(pageable);
@@ -58,7 +61,8 @@ public class SpracheServiceImpl implements SpracheService {
      * @return the entity
      */
     @Override
-    public Optional<Sprache> findOne(String id) {
+    @Transactional(readOnly = true)
+    public Optional<Sprache> findOne(Long id) {
         log.debug("Request to get Sprache : {}", id);
         return spracheRepository.findById(id);
     }
@@ -69,7 +73,7 @@ public class SpracheServiceImpl implements SpracheService {
      * @param id the id of the entity
      */
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
         log.debug("Request to delete Sprache : {}", id);        spracheRepository.deleteById(id);
     }
 }

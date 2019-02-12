@@ -19,8 +19,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 
@@ -61,6 +63,9 @@ public class SpracheResourceIntTest {
     private ExceptionTranslator exceptionTranslator;
 
     @Autowired
+    private EntityManager em;
+
+    @Autowired
     private Validator validator;
 
     private MockMvc restSpracheMockMvc;
@@ -85,7 +90,7 @@ public class SpracheResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Sprache createEntity() {
+    public static Sprache createEntity(EntityManager em) {
         Sprache sprache = new Sprache()
             .sprachCode(DEFAULT_SPRACH_CODE)
             .sprachBezeichnung(DEFAULT_SPRACH_BEZEICHNUNG);
@@ -94,11 +99,11 @@ public class SpracheResourceIntTest {
 
     @Before
     public void initTest() {
-        spracheRepository.deleteAll();
-        sprache = createEntity();
+        sprache = createEntity(em);
     }
 
     @Test
+    @Transactional
     public void createSprache() throws Exception {
         int databaseSizeBeforeCreate = spracheRepository.findAll().size();
 
@@ -117,11 +122,12 @@ public class SpracheResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void createSpracheWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = spracheRepository.findAll().size();
 
         // Create the Sprache with an existing ID
-        sprache.setId("existing_id");
+        sprache.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSpracheMockMvc.perform(post("/api/spraches")
@@ -135,6 +141,7 @@ public class SpracheResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void checkSprachCodeIsRequired() throws Exception {
         int databaseSizeBeforeTest = spracheRepository.findAll().size();
         // set the field null
@@ -152,34 +159,37 @@ public class SpracheResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void getAllSpraches() throws Exception {
         // Initialize the database
-        spracheRepository.save(sprache);
+        spracheRepository.saveAndFlush(sprache);
 
         // Get all the spracheList
         restSpracheMockMvc.perform(get("/api/spraches?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(sprache.getId())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(sprache.getId().intValue())))
             .andExpect(jsonPath("$.[*].sprachCode").value(hasItem(DEFAULT_SPRACH_CODE.toString())))
             .andExpect(jsonPath("$.[*].sprachBezeichnung").value(hasItem(DEFAULT_SPRACH_BEZEICHNUNG.toString())));
     }
     
     @Test
+    @Transactional
     public void getSprache() throws Exception {
         // Initialize the database
-        spracheRepository.save(sprache);
+        spracheRepository.saveAndFlush(sprache);
 
         // Get the sprache
         restSpracheMockMvc.perform(get("/api/spraches/{id}", sprache.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(sprache.getId()))
+            .andExpect(jsonPath("$.id").value(sprache.getId().intValue()))
             .andExpect(jsonPath("$.sprachCode").value(DEFAULT_SPRACH_CODE.toString()))
             .andExpect(jsonPath("$.sprachBezeichnung").value(DEFAULT_SPRACH_BEZEICHNUNG.toString()));
     }
 
     @Test
+    @Transactional
     public void getNonExistingSprache() throws Exception {
         // Get the sprache
         restSpracheMockMvc.perform(get("/api/spraches/{id}", Long.MAX_VALUE))
@@ -187,6 +197,7 @@ public class SpracheResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void updateSprache() throws Exception {
         // Initialize the database
         spracheService.save(sprache);
@@ -195,6 +206,8 @@ public class SpracheResourceIntTest {
 
         // Update the sprache
         Sprache updatedSprache = spracheRepository.findById(sprache.getId()).get();
+        // Disconnect from session so that the updates on updatedSprache are not directly saved in db
+        em.detach(updatedSprache);
         updatedSprache
             .sprachCode(UPDATED_SPRACH_CODE)
             .sprachBezeichnung(UPDATED_SPRACH_BEZEICHNUNG);
@@ -213,6 +226,7 @@ public class SpracheResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void updateNonExistingSprache() throws Exception {
         int databaseSizeBeforeUpdate = spracheRepository.findAll().size();
 
@@ -230,6 +244,7 @@ public class SpracheResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void deleteSprache() throws Exception {
         // Initialize the database
         spracheService.save(sprache);
@@ -247,14 +262,15 @@ public class SpracheResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Sprache.class);
         Sprache sprache1 = new Sprache();
-        sprache1.setId("id1");
+        sprache1.setId(1L);
         Sprache sprache2 = new Sprache();
         sprache2.setId(sprache1.getId());
         assertThat(sprache1).isEqualTo(sprache2);
-        sprache2.setId("id2");
+        sprache2.setId(2L);
         assertThat(sprache1).isNotEqualTo(sprache2);
         sprache1.setId(null);
         assertThat(sprache1).isNotEqualTo(sprache2);

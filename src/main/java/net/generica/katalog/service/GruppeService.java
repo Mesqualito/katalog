@@ -35,12 +35,12 @@ public interface GruppeService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Gruppe> findOne(String id);
+    Optional<Gruppe> findOne(Long id);
 
     /**
      * Delete the "id" gruppe.
      *
      * @param id the id of the entity
      */
-    void delete(String id);
+    void delete(Long id);
 }

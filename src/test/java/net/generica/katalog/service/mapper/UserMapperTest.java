@@ -36,7 +36,7 @@ public class UserMapperTest {
     private User user;
     private UserDTO userDto;
 
-    private static final String DEFAULT_ID = "id1";
+    private static final Long DEFAULT_ID = 1L;
 
     @Before
     public void init() {

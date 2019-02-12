@@ -20,7 +20,7 @@ export class WortDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id: string) {
+    confirmDelete(id: number) {
         this.wortService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'wortListModification',

@@ -23,7 +23,7 @@ export class SpracheService {
         return this.http.put<ISprache>(this.resourceUrl, sprache, { observe: 'response' });
     }
 
-    find(id: string): Observable<EntityResponseType> {
+    find(id: number): Observable<EntityResponseType> {
         return this.http.get<ISprache>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
@@ -32,7 +32,7 @@ export class SpracheService {
         return this.http.get<ISprache[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
-    delete(id: string): Observable<HttpResponse<any>> {
+    delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 }

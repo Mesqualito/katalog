@@ -10,8 +10,8 @@ import { ISprache } from 'app/shared/model/sprache.model';
 import { SpracheService } from 'app/entities/sprache';
 import { IGruppe } from 'app/shared/model/gruppe.model';
 import { GruppeService } from 'app/entities/gruppe';
-import { ISingle } from 'app/shared/model/single.model';
-import { SingleService } from 'app/entities/single';
+import { IWort } from 'app/shared/model/wort.model';
+import { WortService } from 'app/entities/wort';
 
 @Component({
     selector: 'jhi-bezeichnung-update',
@@ -21,18 +21,18 @@ export class BezeichnungUpdateComponent implements OnInit {
     bezeichnung: IBezeichnung;
     isSaving: boolean;
 
-    sprachcodes: ISprache[];
+    spraches: ISprache[];
 
     gruppes: IGruppe[];
 
-    singles: ISingle[];
+    worts: IWort[];
 
     constructor(
         protected jhiAlertService: JhiAlertService,
         protected bezeichnungService: BezeichnungService,
         protected spracheService: SpracheService,
         protected gruppeService: GruppeService,
-        protected singleService: SingleService,
+        protected wortService: WortService,
         protected activatedRoute: ActivatedRoute
     ) {}
 
@@ -49,17 +49,17 @@ export class BezeichnungUpdateComponent implements OnInit {
             )
             .subscribe(
                 (res: ISprache[]) => {
-                    if (!this.bezeichnung.sprachCode || !this.bezeichnung.sprachCode.id) {
-                        this.sprachcodes = res;
+                    if (!this.bezeichnung.sprache || !this.bezeichnung.sprache.id) {
+                        this.spraches = res;
                     } else {
                         this.spracheService
-                            .find(this.bezeichnung.sprachCode.id)
+                            .find(this.bezeichnung.sprache.id)
                             .pipe(
                                 filter((subResMayBeOk: HttpResponse<ISprache>) => subResMayBeOk.ok),
                                 map((subResponse: HttpResponse<ISprache>) => subResponse.body)
                             )
                             .subscribe(
-                                (subRes: ISprache) => (this.sprachcodes = [subRes].concat(res)),
+                                (subRes: ISprache) => (this.spraches = [subRes].concat(res)),
                                 (subRes: HttpErrorResponse) => this.onError(subRes.message)
                             );
                     }
@@ -73,13 +73,13 @@ export class BezeichnungUpdateComponent implements OnInit {
                 map((response: HttpResponse<IGruppe[]>) => response.body)
             )
             .subscribe((res: IGruppe[]) => (this.gruppes = res), (res: HttpErrorResponse) => this.onError(res.message));
-        this.singleService
+        this.wortService
             .query()
             .pipe(
-                filter((mayBeOk: HttpResponse<ISingle[]>) => mayBeOk.ok),
-                map((response: HttpResponse<ISingle[]>) => response.body)
+                filter((mayBeOk: HttpResponse<IWort[]>) => mayBeOk.ok),
+                map((response: HttpResponse<IWort[]>) => response.body)
             )
-            .subscribe((res: ISingle[]) => (this.singles = res), (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: IWort[]) => (this.worts = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {
@@ -120,7 +120,7 @@ export class BezeichnungUpdateComponent implements OnInit {
         return item.id;
     }
 
-    trackSingleById(index: number, item: ISingle) {
+    trackWortById(index: number, item: IWort) {
         return item.id;
     }
 

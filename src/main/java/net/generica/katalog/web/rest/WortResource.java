@@ -105,7 +105,7 @@ public class WortResource {
      * @return the ResponseEntity with status 200 (OK) and with body the wort, or with status 404 (Not Found)
      */
     @GetMapping("/worts/{id}")
-    public ResponseEntity<Wort> getWort(@PathVariable String id) {
+    public ResponseEntity<Wort> getWort(@PathVariable Long id) {
         log.debug("REST request to get Wort : {}", id);
         Optional<Wort> wort = wortService.findOne(id);
         return ResponseUtil.wrapOrNotFound(wort);
@@ -118,9 +118,9 @@ public class WortResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/worts/{id}")
-    public ResponseEntity<Void> deleteWort(@PathVariable String id) {
+    public ResponseEntity<Void> deleteWort(@PathVariable Long id) {
         log.debug("REST request to delete Wort : {}", id);
         wortService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

@@ -99,7 +99,7 @@ public class SpracheResource {
      * @return the ResponseEntity with status 200 (OK) and with body the sprache, or with status 404 (Not Found)
      */
     @GetMapping("/spraches/{id}")
-    public ResponseEntity<Sprache> getSprache(@PathVariable String id) {
+    public ResponseEntity<Sprache> getSprache(@PathVariable Long id) {
         log.debug("REST request to get Sprache : {}", id);
         Optional<Sprache> sprache = spracheService.findOne(id);
         return ResponseUtil.wrapOrNotFound(sprache);
@@ -112,9 +112,9 @@ public class SpracheResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/spraches/{id}")
-    public ResponseEntity<Void> deleteSprache(@PathVariable String id) {
+    public ResponseEntity<Void> deleteSprache(@PathVariable Long id) {
         log.debug("REST request to delete Sprache : {}", id);
         spracheService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

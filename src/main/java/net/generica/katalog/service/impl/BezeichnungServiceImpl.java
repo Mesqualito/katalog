@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
  * Service Implementation for managing Bezeichnung.
  */
 @Service
+@Transactional
 public class BezeichnungServiceImpl implements BezeichnungService {
 
     private final Logger log = LoggerFactory.getLogger(BezeichnungServiceImpl.class);
@@ -45,6 +47,7 @@ public class BezeichnungServiceImpl implements BezeichnungService {
      * @return the list of entities
      */
     @Override
+    @Transactional(readOnly = true)
     public Page<Bezeichnung> findAll(Pageable pageable) {
         log.debug("Request to get all Bezeichnungs");
         return bezeichnungRepository.findAll(pageable);
@@ -67,7 +70,8 @@ public class BezeichnungServiceImpl implements BezeichnungService {
      * @return the entity
      */
     @Override
-    public Optional<Bezeichnung> findOne(String id) {
+    @Transactional(readOnly = true)
+    public Optional<Bezeichnung> findOne(Long id) {
         log.debug("Request to get Bezeichnung : {}", id);
         return bezeichnungRepository.findOneWithEagerRelationships(id);
     }
@@ -78,7 +82,7 @@ public class BezeichnungServiceImpl implements BezeichnungService {
      * @param id the id of the entity
      */
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
         log.debug("Request to delete Bezeichnung : {}", id);        bezeichnungRepository.deleteById(id);
     }
 }

@@ -21,14 +21,14 @@ describe('Service Tests', () => {
             service = injector.get(SpracheService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Sprache('ID', 'AAAAAAA', 'AAAAAAA');
+            elemDefault = new Sprache(0, 'AAAAAAA', 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
             it('should find an element', async () => {
                 const returnedFromService = Object.assign({}, elemDefault);
                 service
-                    .find('123')
+                    .find(123)
                     .pipe(take(1))
                     .subscribe(resp => expect(resp).toMatchObject({ body: elemDefault }));
 
@@ -39,7 +39,7 @@ describe('Service Tests', () => {
             it('should create a Sprache', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        id: 'ID'
+                        id: 0
                     },
                     elemDefault
                 );
@@ -92,7 +92,7 @@ describe('Service Tests', () => {
             });
 
             it('should delete a Sprache', async () => {
-                const rxPromise = service.delete('123').subscribe(resp => expect(resp.ok));
+                const rxPromise = service.delete(123).subscribe(resp => expect(resp.ok));
 
                 const req = httpMock.expectOne({ method: 'DELETE' });
                 req.flush({ status: 200 });

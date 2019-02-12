@@ -11,7 +11,7 @@ describe('Component Tests', () => {
     describe('Wort Management Detail Component', () => {
         let comp: WortDetailComponent;
         let fixture: ComponentFixture<WortDetailComponent>;
-        const route = ({ data: of({ wort: new Wort('123') }) } as any) as ActivatedRoute;
+        const route = ({ data: of({ wort: new Wort(123) }) } as any) as ActivatedRoute;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
                 comp.ngOnInit();
 
                 // THEN
-                expect(comp.wort).toEqual(jasmine.objectContaining({ id: '123' }));
+                expect(comp.wort).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });

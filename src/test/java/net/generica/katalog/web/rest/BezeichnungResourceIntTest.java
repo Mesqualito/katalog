@@ -22,8 +22,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +71,9 @@ public class BezeichnungResourceIntTest {
     private ExceptionTranslator exceptionTranslator;
 
     @Autowired
+    private EntityManager em;
+
+    @Autowired
     private Validator validator;
 
     private MockMvc restBezeichnungMockMvc;
@@ -93,7 +98,7 @@ public class BezeichnungResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Bezeichnung createEntity() {
+    public static Bezeichnung createEntity(EntityManager em) {
         Bezeichnung bezeichnung = new Bezeichnung()
             .bezeichnung(DEFAULT_BEZEICHNUNG);
         return bezeichnung;
@@ -101,11 +106,11 @@ public class BezeichnungResourceIntTest {
 
     @Before
     public void initTest() {
-        bezeichnungRepository.deleteAll();
-        bezeichnung = createEntity();
+        bezeichnung = createEntity(em);
     }
 
     @Test
+    @Transactional
     public void createBezeichnung() throws Exception {
         int databaseSizeBeforeCreate = bezeichnungRepository.findAll().size();
 
@@ -123,11 +128,12 @@ public class BezeichnungResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void createBezeichnungWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = bezeichnungRepository.findAll().size();
 
         // Create the Bezeichnung with an existing ID
-        bezeichnung.setId("existing_id");
+        bezeichnung.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restBezeichnungMockMvc.perform(post("/api/bezeichnungs")
@@ -141,6 +147,7 @@ public class BezeichnungResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void checkBezeichnungIsRequired() throws Exception {
         int databaseSizeBeforeTest = bezeichnungRepository.findAll().size();
         // set the field null
@@ -158,15 +165,16 @@ public class BezeichnungResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void getAllBezeichnungs() throws Exception {
         // Initialize the database
-        bezeichnungRepository.save(bezeichnung);
+        bezeichnungRepository.saveAndFlush(bezeichnung);
 
         // Get all the bezeichnungList
         restBezeichnungMockMvc.perform(get("/api/bezeichnungs?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(bezeichnung.getId())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(bezeichnung.getId().intValue())))
             .andExpect(jsonPath("$.[*].bezeichnung").value(hasItem(DEFAULT_BEZEICHNUNG.toString())));
     }
     
@@ -204,19 +212,21 @@ public class BezeichnungResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void getBezeichnung() throws Exception {
         // Initialize the database
-        bezeichnungRepository.save(bezeichnung);
+        bezeichnungRepository.saveAndFlush(bezeichnung);
 
         // Get the bezeichnung
         restBezeichnungMockMvc.perform(get("/api/bezeichnungs/{id}", bezeichnung.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(bezeichnung.getId()))
+            .andExpect(jsonPath("$.id").value(bezeichnung.getId().intValue()))
             .andExpect(jsonPath("$.bezeichnung").value(DEFAULT_BEZEICHNUNG.toString()));
     }
 
     @Test
+    @Transactional
     public void getNonExistingBezeichnung() throws Exception {
         // Get the bezeichnung
         restBezeichnungMockMvc.perform(get("/api/bezeichnungs/{id}", Long.MAX_VALUE))
@@ -224,6 +234,7 @@ public class BezeichnungResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void updateBezeichnung() throws Exception {
         // Initialize the database
         bezeichnungService.save(bezeichnung);
@@ -232,6 +243,8 @@ public class BezeichnungResourceIntTest {
 
         // Update the bezeichnung
         Bezeichnung updatedBezeichnung = bezeichnungRepository.findById(bezeichnung.getId()).get();
+        // Disconnect from session so that the updates on updatedBezeichnung are not directly saved in db
+        em.detach(updatedBezeichnung);
         updatedBezeichnung
             .bezeichnung(UPDATED_BEZEICHNUNG);
 
@@ -248,6 +261,7 @@ public class BezeichnungResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void updateNonExistingBezeichnung() throws Exception {
         int databaseSizeBeforeUpdate = bezeichnungRepository.findAll().size();
 
@@ -265,6 +279,7 @@ public class BezeichnungResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void deleteBezeichnung() throws Exception {
         // Initialize the database
         bezeichnungService.save(bezeichnung);
@@ -282,14 +297,15 @@ public class BezeichnungResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Bezeichnung.class);
         Bezeichnung bezeichnung1 = new Bezeichnung();
-        bezeichnung1.setId("id1");
+        bezeichnung1.setId(1L);
         Bezeichnung bezeichnung2 = new Bezeichnung();
         bezeichnung2.setId(bezeichnung1.getId());
         assertThat(bezeichnung1).isEqualTo(bezeichnung2);
-        bezeichnung2.setId("id2");
+        bezeichnung2.setId(2L);
         assertThat(bezeichnung1).isNotEqualTo(bezeichnung2);
         bezeichnung1.setId(null);
         assertThat(bezeichnung1).isNotEqualTo(bezeichnung2);

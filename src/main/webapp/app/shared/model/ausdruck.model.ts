@@ -1,21 +1,21 @@
 import { ISprache } from 'app/shared/model/sprache.model';
 import { IGruppe } from 'app/shared/model/gruppe.model';
-import { ISingle } from 'app/shared/model/single.model';
+import { IWort } from 'app/shared/model/wort.model';
 
 export interface IAusdruck {
-    id?: string;
+    id?: number;
     ausdruck?: string;
-    sprachCode?: ISprache;
-    gruppenCode?: IGruppe;
-    singles?: ISingle[];
+    sprache?: ISprache;
+    gruppe?: IGruppe;
+    einzelworts?: IWort[];
 }
 
 export class Ausdruck implements IAusdruck {
     constructor(
-        public id?: string,
+        public id?: number,
         public ausdruck?: string,
-        public sprachCode?: ISprache,
-        public gruppenCode?: IGruppe,
-        public singles?: ISingle[]
+        public sprache?: ISprache,
+        public gruppe?: IGruppe,
+        public einzelworts?: IWort[]
     ) {}
 }

@@ -2,7 +2,7 @@
     "name": "Wort",
     "fields": [
         {
-            "fieldName": "wort",
+            "fieldName": "eWort",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
@@ -12,24 +12,25 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "relationshipName": "sprachCode",
+            "relationshipName": "sprache",
             "otherEntityName": "sprache",
-            "otherEntityField": "id",
+            "otherEntityField": "sprache",
             "ownerSide": true,
             "otherEntityRelationshipName": "wort"
         },
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "gruppenCode",
+            "relationshipType": "many-to-one",
+            "relationshipName": "gruppe",
             "otherEntityName": "gruppe",
-            "otherEntityRelationshipName": "wort"
+            "otherEntityField": "gruppe",
+            "otherEntityRelationshipName": "single"
         },
         {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "wort",
-            "relationshipName": "wort",
+            "relationshipName": "einzelwort",
             "otherEntityName": "wort",
-            "otherEntityField": "verbund",
+            "otherEntityField": "wort",
             "ownerSide": true
         },
         {
@@ -37,24 +38,24 @@
             "relationshipName": "wort",
             "otherEntityName": "wort",
             "ownerSide": false,
-            "otherEntityRelationshipName": "wort"
+            "otherEntityRelationshipName": "einzelwort"
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "wort",
+            "relationshipName": "bezeichnung",
             "otherEntityName": "bezeichnung",
             "ownerSide": false,
-            "otherEntityRelationshipName": "wort"
+            "otherEntityRelationshipName": "einzelwort"
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "wort",
+            "relationshipName": "ausdruck",
             "otherEntityName": "ausdruck",
             "ownerSide": false,
-            "otherEntityRelationshipName": "wort"
+            "otherEntityRelationshipName": "einzelwort"
         }
     ],
-    "changelogDate": "20190211102327",
+    "changelogDate": "20190211170349",
     "entityTableName": "wort",
     "dto": "no",
     "pagination": "pagination",

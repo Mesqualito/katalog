@@ -23,7 +23,7 @@ export class WortService {
         return this.http.put<IWort>(this.resourceUrl, wort, { observe: 'response' });
     }
 
-    find(id: string): Observable<EntityResponseType> {
+    find(id: number): Observable<EntityResponseType> {
         return this.http.get<IWort>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
@@ -32,7 +32,7 @@ export class WortService {
         return this.http.get<IWort[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
-    delete(id: string): Observable<HttpResponse<any>> {
+    delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 }

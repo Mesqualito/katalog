@@ -104,7 +104,7 @@ public class AusdruckResource {
      * @return the ResponseEntity with status 200 (OK) and with body the ausdruck, or with status 404 (Not Found)
      */
     @GetMapping("/ausdrucks/{id}")
-    public ResponseEntity<Ausdruck> getAusdruck(@PathVariable String id) {
+    public ResponseEntity<Ausdruck> getAusdruck(@PathVariable Long id) {
         log.debug("REST request to get Ausdruck : {}", id);
         Optional<Ausdruck> ausdruck = ausdruckService.findOne(id);
         return ResponseUtil.wrapOrNotFound(ausdruck);
@@ -117,9 +117,9 @@ public class AusdruckResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/ausdrucks/{id}")
-    public ResponseEntity<Void> deleteAusdruck(@PathVariable String id) {
+    public ResponseEntity<Void> deleteAusdruck(@PathVariable Long id) {
         log.debug("REST request to delete Ausdruck : {}", id);
         ausdruckService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

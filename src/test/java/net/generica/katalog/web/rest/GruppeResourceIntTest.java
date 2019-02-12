@@ -19,8 +19,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 
@@ -61,6 +63,9 @@ public class GruppeResourceIntTest {
     private ExceptionTranslator exceptionTranslator;
 
     @Autowired
+    private EntityManager em;
+
+    @Autowired
     private Validator validator;
 
     private MockMvc restGruppeMockMvc;
@@ -85,7 +90,7 @@ public class GruppeResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Gruppe createEntity() {
+    public static Gruppe createEntity(EntityManager em) {
         Gruppe gruppe = new Gruppe()
             .gruppenCode(DEFAULT_GRUPPEN_CODE)
             .gruppenBezeichnung(DEFAULT_GRUPPEN_BEZEICHNUNG);
@@ -94,11 +99,11 @@ public class GruppeResourceIntTest {
 
     @Before
     public void initTest() {
-        gruppeRepository.deleteAll();
-        gruppe = createEntity();
+        gruppe = createEntity(em);
     }
 
     @Test
+    @Transactional
     public void createGruppe() throws Exception {
         int databaseSizeBeforeCreate = gruppeRepository.findAll().size();
 
@@ -117,11 +122,12 @@ public class GruppeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void createGruppeWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = gruppeRepository.findAll().size();
 
         // Create the Gruppe with an existing ID
-        gruppe.setId("existing_id");
+        gruppe.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restGruppeMockMvc.perform(post("/api/gruppes")
@@ -135,6 +141,7 @@ public class GruppeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void checkGruppenCodeIsRequired() throws Exception {
         int databaseSizeBeforeTest = gruppeRepository.findAll().size();
         // set the field null
@@ -152,34 +159,37 @@ public class GruppeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void getAllGruppes() throws Exception {
         // Initialize the database
-        gruppeRepository.save(gruppe);
+        gruppeRepository.saveAndFlush(gruppe);
 
         // Get all the gruppeList
         restGruppeMockMvc.perform(get("/api/gruppes?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(gruppe.getId())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(gruppe.getId().intValue())))
             .andExpect(jsonPath("$.[*].gruppenCode").value(hasItem(DEFAULT_GRUPPEN_CODE.toString())))
             .andExpect(jsonPath("$.[*].gruppenBezeichnung").value(hasItem(DEFAULT_GRUPPEN_BEZEICHNUNG.toString())));
     }
     
     @Test
+    @Transactional
     public void getGruppe() throws Exception {
         // Initialize the database
-        gruppeRepository.save(gruppe);
+        gruppeRepository.saveAndFlush(gruppe);
 
         // Get the gruppe
         restGruppeMockMvc.perform(get("/api/gruppes/{id}", gruppe.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(gruppe.getId()))
+            .andExpect(jsonPath("$.id").value(gruppe.getId().intValue()))
             .andExpect(jsonPath("$.gruppenCode").value(DEFAULT_GRUPPEN_CODE.toString()))
             .andExpect(jsonPath("$.gruppenBezeichnung").value(DEFAULT_GRUPPEN_BEZEICHNUNG.toString()));
     }
 
     @Test
+    @Transactional
     public void getNonExistingGruppe() throws Exception {
         // Get the gruppe
         restGruppeMockMvc.perform(get("/api/gruppes/{id}", Long.MAX_VALUE))
@@ -187,6 +197,7 @@ public class GruppeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void updateGruppe() throws Exception {
         // Initialize the database
         gruppeService.save(gruppe);
@@ -195,6 +206,8 @@ public class GruppeResourceIntTest {
 
         // Update the gruppe
         Gruppe updatedGruppe = gruppeRepository.findById(gruppe.getId()).get();
+        // Disconnect from session so that the updates on updatedGruppe are not directly saved in db
+        em.detach(updatedGruppe);
         updatedGruppe
             .gruppenCode(UPDATED_GRUPPEN_CODE)
             .gruppenBezeichnung(UPDATED_GRUPPEN_BEZEICHNUNG);
@@ -213,6 +226,7 @@ public class GruppeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void updateNonExistingGruppe() throws Exception {
         int databaseSizeBeforeUpdate = gruppeRepository.findAll().size();
 
@@ -230,6 +244,7 @@ public class GruppeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void deleteGruppe() throws Exception {
         // Initialize the database
         gruppeService.save(gruppe);
@@ -247,14 +262,15 @@ public class GruppeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Gruppe.class);
         Gruppe gruppe1 = new Gruppe();
-        gruppe1.setId("id1");
+        gruppe1.setId(1L);
         Gruppe gruppe2 = new Gruppe();
         gruppe2.setId(gruppe1.getId());
         assertThat(gruppe1).isEqualTo(gruppe2);
-        gruppe2.setId("id2");
+        gruppe2.setId(2L);
         assertThat(gruppe1).isNotEqualTo(gruppe2);
         gruppe1.setId(null);
         assertThat(gruppe1).isNotEqualTo(gruppe2);

@@ -11,7 +11,7 @@ describe('Component Tests', () => {
     describe('Sprache Management Detail Component', () => {
         let comp: SpracheDetailComponent;
         let fixture: ComponentFixture<SpracheDetailComponent>;
-        const route = ({ data: of({ sprache: new Sprache('123') }) } as any) as ActivatedRoute;
+        const route = ({ data: of({ sprache: new Sprache(123) }) } as any) as ActivatedRoute;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
                 comp.ngOnInit();
 
                 // THEN
-                expect(comp.sprache).toEqual(jasmine.objectContaining({ id: '123' }));
+                expect(comp.sprache).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });

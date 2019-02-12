@@ -41,12 +41,12 @@ public interface BezeichnungService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Bezeichnung> findOne(String id);
+    Optional<Bezeichnung> findOne(Long id);
 
     /**
      * Delete the "id" bezeichnung.
      *
      * @param id the id of the entity
      */
-    void delete(String id);
+    void delete(Long id);
 }

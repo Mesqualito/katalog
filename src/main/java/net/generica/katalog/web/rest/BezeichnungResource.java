@@ -105,7 +105,7 @@ public class BezeichnungResource {
      * @return the ResponseEntity with status 200 (OK) and with body the bezeichnung, or with status 404 (Not Found)
      */
     @GetMapping("/bezeichnungs/{id}")
-    public ResponseEntity<Bezeichnung> getBezeichnung(@PathVariable String id) {
+    public ResponseEntity<Bezeichnung> getBezeichnung(@PathVariable Long id) {
         log.debug("REST request to get Bezeichnung : {}", id);
         Optional<Bezeichnung> bezeichnung = bezeichnungService.findOne(id);
         return ResponseUtil.wrapOrNotFound(bezeichnung);
@@ -118,9 +118,9 @@ public class BezeichnungResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/bezeichnungs/{id}")
-    public ResponseEntity<Void> deleteBezeichnung(@PathVariable String id) {
+    public ResponseEntity<Void> deleteBezeichnung(@PathVariable Long id) {
         log.debug("REST request to delete Bezeichnung : {}", id);
         bezeichnungService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

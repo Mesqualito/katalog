@@ -35,12 +35,12 @@ public interface SpracheService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Sprache> findOne(String id);
+    Optional<Sprache> findOne(Long id);
 
     /**
      * Delete the "id" sprache.
      *
      * @param id the id of the entity
      */
-    void delete(String id);
+    void delete(Long id);
 }

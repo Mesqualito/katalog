@@ -11,7 +11,7 @@ describe('Component Tests', () => {
     describe('Gruppe Management Detail Component', () => {
         let comp: GruppeDetailComponent;
         let fixture: ComponentFixture<GruppeDetailComponent>;
-        const route = ({ data: of({ gruppe: new Gruppe('123') }) } as any) as ActivatedRoute;
+        const route = ({ data: of({ gruppe: new Gruppe(123) }) } as any) as ActivatedRoute;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
                 comp.ngOnInit();
 
                 // THEN
-                expect(comp.gruppe).toEqual(jasmine.objectContaining({ id: '123' }));
+                expect(comp.gruppe).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });

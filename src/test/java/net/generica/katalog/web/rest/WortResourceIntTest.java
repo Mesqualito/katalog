@@ -22,8 +22,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = KatalogApp.class)
 public class WortResourceIntTest {
 
-    private static final String DEFAULT_WORT = "AAAAAAAAAA";
-    private static final String UPDATED_WORT = "BBBBBBBBBB";
+    private static final String DEFAULT_E_WORT = "AAAAAAAAAA";
+    private static final String UPDATED_E_WORT = "BBBBBBBBBB";
 
     @Autowired
     private WortRepository wortRepository;
@@ -67,6 +69,9 @@ public class WortResourceIntTest {
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
+    private EntityManager em;
 
     @Autowired
     private Validator validator;
@@ -93,19 +98,19 @@ public class WortResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Wort createEntity() {
+    public static Wort createEntity(EntityManager em) {
         Wort wort = new Wort()
-            .wort(DEFAULT_WORT);
+            .eWort(DEFAULT_E_WORT);
         return wort;
     }
 
     @Before
     public void initTest() {
-        wortRepository.deleteAll();
-        wort = createEntity();
+        wort = createEntity(em);
     }
 
     @Test
+    @Transactional
     public void createWort() throws Exception {
         int databaseSizeBeforeCreate = wortRepository.findAll().size();
 
@@ -119,15 +124,16 @@ public class WortResourceIntTest {
         List<Wort> wortList = wortRepository.findAll();
         assertThat(wortList).hasSize(databaseSizeBeforeCreate + 1);
         Wort testWort = wortList.get(wortList.size() - 1);
-        assertThat(testWort.getWort()).isEqualTo(DEFAULT_WORT);
+        assertThat(testWort.geteWort()).isEqualTo(DEFAULT_E_WORT);
     }
 
     @Test
+    @Transactional
     public void createWortWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = wortRepository.findAll().size();
 
         // Create the Wort with an existing ID
-        wort.setId("existing_id");
+        wort.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restWortMockMvc.perform(post("/api/worts")
@@ -141,10 +147,11 @@ public class WortResourceIntTest {
     }
 
     @Test
-    public void checkWortIsRequired() throws Exception {
+    @Transactional
+    public void checkeWortIsRequired() throws Exception {
         int databaseSizeBeforeTest = wortRepository.findAll().size();
         // set the field null
-        wort.setWort(null);
+        wort.seteWort(null);
 
         // Create the Wort, which fails.
 
@@ -158,16 +165,17 @@ public class WortResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void getAllWorts() throws Exception {
         // Initialize the database
-        wortRepository.save(wort);
+        wortRepository.saveAndFlush(wort);
 
         // Get all the wortList
         restWortMockMvc.perform(get("/api/worts?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(wort.getId())))
-            .andExpect(jsonPath("$.[*].wort").value(hasItem(DEFAULT_WORT.toString())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(wort.getId().intValue())))
+            .andExpect(jsonPath("$.[*].eWort").value(hasItem(DEFAULT_E_WORT.toString())));
     }
     
     @SuppressWarnings({"unchecked"})
@@ -204,19 +212,21 @@ public class WortResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void getWort() throws Exception {
         // Initialize the database
-        wortRepository.save(wort);
+        wortRepository.saveAndFlush(wort);
 
         // Get the wort
         restWortMockMvc.perform(get("/api/worts/{id}", wort.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(wort.getId()))
-            .andExpect(jsonPath("$.wort").value(DEFAULT_WORT.toString()));
+            .andExpect(jsonPath("$.id").value(wort.getId().intValue()))
+            .andExpect(jsonPath("$.eWort").value(DEFAULT_E_WORT.toString()));
     }
 
     @Test
+    @Transactional
     public void getNonExistingWort() throws Exception {
         // Get the wort
         restWortMockMvc.perform(get("/api/worts/{id}", Long.MAX_VALUE))
@@ -224,6 +234,7 @@ public class WortResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void updateWort() throws Exception {
         // Initialize the database
         wortService.save(wort);
@@ -232,8 +243,10 @@ public class WortResourceIntTest {
 
         // Update the wort
         Wort updatedWort = wortRepository.findById(wort.getId()).get();
+        // Disconnect from session so that the updates on updatedWort are not directly saved in db
+        em.detach(updatedWort);
         updatedWort
-            .wort(UPDATED_WORT);
+            .eWort(UPDATED_E_WORT);
 
         restWortMockMvc.perform(put("/api/worts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -244,10 +257,11 @@ public class WortResourceIntTest {
         List<Wort> wortList = wortRepository.findAll();
         assertThat(wortList).hasSize(databaseSizeBeforeUpdate);
         Wort testWort = wortList.get(wortList.size() - 1);
-        assertThat(testWort.getWort()).isEqualTo(UPDATED_WORT);
+        assertThat(testWort.geteWort()).isEqualTo(UPDATED_E_WORT);
     }
 
     @Test
+    @Transactional
     public void updateNonExistingWort() throws Exception {
         int databaseSizeBeforeUpdate = wortRepository.findAll().size();
 
@@ -265,6 +279,7 @@ public class WortResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void deleteWort() throws Exception {
         // Initialize the database
         wortService.save(wort);
@@ -282,14 +297,15 @@ public class WortResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Wort.class);
         Wort wort1 = new Wort();
-        wort1.setId("id1");
+        wort1.setId(1L);
         Wort wort2 = new Wort();
         wort2.setId(wort1.getId());
         assertThat(wort1).isEqualTo(wort2);
-        wort2.setId("id2");
+        wort2.setId(2L);
         assertThat(wort1).isNotEqualTo(wort2);
         wort1.setId(null);
         assertThat(wort1).isNotEqualTo(wort2);

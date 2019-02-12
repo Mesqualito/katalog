@@ -15,18 +15,24 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="wort"><span jhiTranslate="katalogApp.wort.wort">Wort</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="sprachCode.id"><span jhiTranslate="katalogApp.wort.sprachCode">Sprach Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eWort"><span jhiTranslate="katalogApp.wort.eWort">E Wort</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="sprache.sprache"><span jhiTranslate="katalogApp.wort.sprache">Sprache</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="gruppe.gruppe"><span jhiTranslate="katalogApp.wort.gruppe">Gruppe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let wort of worts ;trackBy: trackId">
                 <td><a [routerLink]="['/wort', wort.id, 'view' ]">{{wort.id}}</a></td>
-                <td>{{wort.wort}}</td>
+                <td>{{wort.eWort}}</td>
                 <td>
-                    <div *ngIf="wort.sprachCode">
-                        <a [routerLink]="['../sprache', wort.sprachCode?.id, 'view' ]" >{{wort.sprachCode?.id}}</a>
+                    <div *ngIf="wort.sprache">
+                        <a [routerLink]="['../sprache', wort.sprache?.id, 'view' ]" >{{wort.sprache?.sprache}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="wort.gruppe">
+                        <a [routerLink]="['../gruppe', wort.gruppe?.id, 'view' ]" >{{wort.gruppe?.gruppe}}</a>
                     </div>
                 </td>
                 <td class="text-right">

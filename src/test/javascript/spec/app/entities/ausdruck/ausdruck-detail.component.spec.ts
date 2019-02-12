@@ -11,7 +11,7 @@ describe('Component Tests', () => {
     describe('Ausdruck Management Detail Component', () => {
         let comp: AusdruckDetailComponent;
         let fixture: ComponentFixture<AusdruckDetailComponent>;
-        const route = ({ data: of({ ausdruck: new Ausdruck('123') }) } as any) as ActivatedRoute;
+        const route = ({ data: of({ ausdruck: new Ausdruck(123) }) } as any) as ActivatedRoute;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
                 comp.ngOnInit();
 
                 // THEN
-                expect(comp.ausdruck).toEqual(jasmine.objectContaining({ id: '123' }));
+                expect(comp.ausdruck).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
