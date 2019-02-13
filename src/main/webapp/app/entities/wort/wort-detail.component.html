@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="wort">
+            <h2><span jhiTranslate="katalogApp.wort.detail.title">Wort</span> {{wort.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="katalogApp.wort.intId">Int Id</span></dt>
+                <dd>
+                    <span>{{wort.intId}}</span>
+                </dd>
+                <dt><span jhiTranslate="katalogApp.wort.eWort">E Wort</span></dt>
+                <dd>
+                    <span>{{wort.eWort}}</span>
+                </dd>
+                <dt><span jhiTranslate="katalogApp.wort.sprache">Sprache</span></dt>
+                <dd>
+                    <div *ngIf="wort.spracheId">
+                        <a [routerLink]="['/sprache', wort.spracheId, 'view']">{{wort.spracheSprachCode}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="katalogApp.wort.gruppe">Gruppe</span></dt>
+                <dd>
+                    <div *ngIf="wort.gruppeId">
+                        <a [routerLink]="['/gruppe', wort.gruppeId, 'view']">{{wort.gruppeGruppenCode}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="katalogApp.wort.einzelwort">Einzelwort</span></dt>
+                <dd>
+                    <span *ngFor="let einzelwort of wort.einzelworts; let last = last">
+                        <a [routerLink]="['/wort', einzelwort?.id, 'view' ]">{{einzelwort.eWort}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/wort', wort.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

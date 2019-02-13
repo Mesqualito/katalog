@@ -250,10 +250,12 @@ a {
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
+
+    &.cal-day-notes {
+        width: 150px;
+    }
 }
-&.cal-day-notes {
-    width: 150px;
-}
+
 .footer {
     bottom: 0;
     left: 0;

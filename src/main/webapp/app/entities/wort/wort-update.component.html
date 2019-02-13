@@ -1,0 +1,70 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-wort-heading" jhiTranslate="katalogApp.wort.home.createOrEditLabel">Create or edit a Wort</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!wort.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="wort.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="katalogApp.wort.intId" for="field_intId">Int Id</label>
+                    <input type="number" class="form-control" name="intId" id="field_intId"
+                        [(ngModel)]="wort.intId" required/>
+                    <div [hidden]="!(editForm.controls.intId?.dirty && editForm.controls.intId?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.intId?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.intId?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="katalogApp.wort.eWort" for="field_eWort">E Wort</label>
+                    <input type="text" class="form-control" name="eWort" id="field_eWort"
+                        [(ngModel)]="wort.eWort" required/>
+                    <div [hidden]="!(editForm.controls.eWort?.dirty && editForm.controls.eWort?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.eWort?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="katalogApp.wort.sprache" for="field_sprache">Sprache</label>
+                    <select class="form-control" id="field_sprache" name="sprache" [(ngModel)]="wort.spracheId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="spracheOption.id" *ngFor="let spracheOption of spraches; trackBy: trackSpracheById">{{spracheOption.sprachCode}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="katalogApp.wort.gruppe" for="field_gruppe">Gruppe</label>
+                    <select class="form-control" id="field_gruppe" name="gruppe" [(ngModel)]="wort.gruppeId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="gruppeOption.id" *ngFor="let gruppeOption of gruppes; trackBy: trackGruppeById">{{gruppeOption.gruppenCode}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label jhiTranslate="katalogApp.wort.einzelwort" for="field_einzelwort">Einzelwort</label>
+                    <select class="form-control" id="field_einzelwort" multiple name="einzelwort" [(ngModel)]="wort.einzelworts">
+                        <option [ngValue]="getSelected(wort.einzelworts, wortOption)" *ngFor="let wortOption of worts; trackBy: trackWortById">{{wortOption.eWort}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

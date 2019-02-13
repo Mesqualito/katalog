@@ -1,0 +1,25 @@
+{
+    "katalogApp": {
+        "gruppe": {
+            "home": {
+                "title": "Gruppes",
+                "createLabel": "Create a new Gruppe",
+                "createOrEditLabel": "Create or edit a Gruppe"
+            },
+            "created": "A new Gruppe is created with identifier {{ param }}",
+            "updated": "A Gruppe is updated with identifier {{ param }}",
+            "deleted": "A Gruppe is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Gruppe {{ id }}?"
+            },
+            "detail": {
+                "title": "Gruppe"
+            },
+            "gruppenCode": "Gruppen Code",
+            "gruppenBezeichnung": "Gruppen Bezeichnung",
+            "single": "Single",
+            "bezeichnung": "Bezeichnung",
+            "ausdruck": "Ausdruck"
+        }
+    }
+}

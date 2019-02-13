@@ -1,0 +1,28 @@
+{
+    "katalogApp": {
+        "wort": {
+            "home": {
+                "title": "Worts",
+                "createLabel": "Create a new Wort",
+                "createOrEditLabel": "Create or edit a Wort"
+            },
+            "created": "A new Wort is created with identifier {{ param }}",
+            "updated": "A Wort is updated with identifier {{ param }}",
+            "deleted": "A Wort is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Wort {{ id }}?"
+            },
+            "detail": {
+                "title": "Wort"
+            },
+            "intId": "Int Id",
+            "eWort": "E Wort",
+            "sprache": "Sprache",
+            "gruppe": "Gruppe",
+            "einzelwort": "Einzelwort",
+            "wort": "Wort",
+            "bezeichnung": "Bezeichnung",
+            "ausdruck": "Ausdruck"
+        }
+    }
+}

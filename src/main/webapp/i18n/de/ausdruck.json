@@ -1,0 +1,24 @@
+{
+    "katalogApp": {
+        "ausdruck": {
+            "home": {
+                "title": "Ausdrucks",
+                "createLabel": "Ausdruck erstellen",
+                "createOrEditLabel": "Ausdruck erstellen oder bearbeiten"
+            },
+            "created": "Ausdruck erstellt mit ID {{ param }}",
+            "updated": "Ausdruck aktualisiert mit ID {{ param }}",
+            "deleted": "Ausdruck gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Ausdruck {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Ausdruck"
+            },
+            "ausdruck": "Ausdruck",
+            "sprache": "Sprache",
+            "gruppe": "Gruppe",
+            "einzelwort": "Einzelwort"
+        }
+    }
+}
