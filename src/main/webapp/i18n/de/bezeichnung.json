@@ -1,0 +1,24 @@
+{
+    "katalogApp": {
+        "bezeichnung": {
+            "home": {
+                "title": "Bezeichnungs",
+                "createLabel": "Bezeichnung erstellen",
+                "createOrEditLabel": "Bezeichnung erstellen oder bearbeiten"
+            },
+            "created": "Bezeichnung erstellt mit ID {{ param }}",
+            "updated": "Bezeichnung aktualisiert mit ID {{ param }}",
+            "deleted": "Bezeichnung gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Bezeichnung {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Bezeichnung"
+            },
+            "bezeichnung": "Bezeichnung",
+            "sprache": "Sprache",
+            "gruppe": "Gruppe",
+            "einzelwort": "Einzelwort"
+        }
+    }
+}

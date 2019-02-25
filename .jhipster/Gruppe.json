@@ -1,0 +1,45 @@
+{
+    "name": "Gruppe",
+    "fields": [
+        {
+            "fieldName": "gruppenCode",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "gruppenBezeichnung",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "single",
+            "otherEntityName": "wort",
+            "otherEntityRelationshipName": "gruppe"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "bezeichnung",
+            "otherEntityName": "bezeichnung",
+            "otherEntityRelationshipName": "gruppe"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "ausdruck",
+            "otherEntityName": "ausdruck",
+            "otherEntityRelationshipName": "gruppe"
+        }
+    ],
+    "changelogDate": "20190212094900",
+    "entityTableName": "gruppe",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
