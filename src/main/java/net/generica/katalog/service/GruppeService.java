@@ -1,6 +1,6 @@
 package net.generica.katalog.service;
 
-import net.generica.katalog.domain.Gruppe;
+import net.generica.katalog.service.dto.GruppeDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +15,10 @@ public interface GruppeService {
     /**
      * Save a gruppe.
      *
-     * @param gruppe the entity to save
+     * @param gruppeDTO the entity to save
      * @return the persisted entity
      */
-    Gruppe save(Gruppe gruppe);
+    GruppeDTO save(GruppeDTO gruppeDTO);
 
     /**
      * Get all the gruppes.
@@ -26,7 +26,7 @@ public interface GruppeService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<Gruppe> findAll(Pageable pageable);
+    Page<GruppeDTO> findAll(Pageable pageable);
 
 
     /**
@@ -35,7 +35,7 @@ public interface GruppeService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Gruppe> findOne(Long id);
+    Optional<GruppeDTO> findOne(Long id);
 
     /**
      * Delete the "id" gruppe.

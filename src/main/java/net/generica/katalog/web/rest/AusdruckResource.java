@@ -1,9 +1,9 @@
 package net.generica.katalog.web.rest;
-import net.generica.katalog.domain.Ausdruck;
 import net.generica.katalog.service.AusdruckService;
 import net.generica.katalog.web.rest.errors.BadRequestAlertException;
 import net.generica.katalog.web.rest.util.HeaderUtil;
 import net.generica.katalog.web.rest.util.PaginationUtil;
+import net.generica.katalog.service.dto.AusdruckDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -40,17 +41,17 @@ public class AusdruckResource {
     /**
      * POST  /ausdrucks : Create a new ausdruck.
      *
-     * @param ausdruck the ausdruck to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new ausdruck, or with status 400 (Bad Request) if the ausdruck has already an ID
+     * @param ausdruckDTO the ausdruckDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new ausdruckDTO, or with status 400 (Bad Request) if the ausdruck has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/ausdrucks")
-    public ResponseEntity<Ausdruck> createAusdruck(@RequestBody Ausdruck ausdruck) throws URISyntaxException {
-        log.debug("REST request to save Ausdruck : {}", ausdruck);
-        if (ausdruck.getId() != null) {
+    public ResponseEntity<AusdruckDTO> createAusdruck(@Valid @RequestBody AusdruckDTO ausdruckDTO) throws URISyntaxException {
+        log.debug("REST request to save Ausdruck : {}", ausdruckDTO);
+        if (ausdruckDTO.getId() != null) {
             throw new BadRequestAlertException("A new ausdruck cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Ausdruck result = ausdruckService.save(ausdruck);
+        AusdruckDTO result = ausdruckService.save(ausdruckDTO);
         return ResponseEntity.created(new URI("/api/ausdrucks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -59,21 +60,21 @@ public class AusdruckResource {
     /**
      * PUT  /ausdrucks : Updates an existing ausdruck.
      *
-     * @param ausdruck the ausdruck to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated ausdruck,
-     * or with status 400 (Bad Request) if the ausdruck is not valid,
-     * or with status 500 (Internal Server Error) if the ausdruck couldn't be updated
+     * @param ausdruckDTO the ausdruckDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated ausdruckDTO,
+     * or with status 400 (Bad Request) if the ausdruckDTO is not valid,
+     * or with status 500 (Internal Server Error) if the ausdruckDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/ausdrucks")
-    public ResponseEntity<Ausdruck> updateAusdruck(@RequestBody Ausdruck ausdruck) throws URISyntaxException {
-        log.debug("REST request to update Ausdruck : {}", ausdruck);
-        if (ausdruck.getId() == null) {
+    public ResponseEntity<AusdruckDTO> updateAusdruck(@Valid @RequestBody AusdruckDTO ausdruckDTO) throws URISyntaxException {
+        log.debug("REST request to update Ausdruck : {}", ausdruckDTO);
+        if (ausdruckDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Ausdruck result = ausdruckService.save(ausdruck);
+        AusdruckDTO result = ausdruckService.save(ausdruckDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, ausdruck.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, ausdruckDTO.getId().toString()))
             .body(result);
     }
 
@@ -85,9 +86,9 @@ public class AusdruckResource {
      * @return the ResponseEntity with status 200 (OK) and the list of ausdrucks in body
      */
     @GetMapping("/ausdrucks")
-    public ResponseEntity<List<Ausdruck>> getAllAusdrucks(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public ResponseEntity<List<AusdruckDTO>> getAllAusdrucks(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of Ausdrucks");
-        Page<Ausdruck> page;
+        Page<AusdruckDTO> page;
         if (eagerload) {
             page = ausdruckService.findAllWithEagerRelationships(pageable);
         } else {
@@ -100,20 +101,20 @@ public class AusdruckResource {
     /**
      * GET  /ausdrucks/:id : get the "id" ausdruck.
      *
-     * @param id the id of the ausdruck to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the ausdruck, or with status 404 (Not Found)
+     * @param id the id of the ausdruckDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the ausdruckDTO, or with status 404 (Not Found)
      */
     @GetMapping("/ausdrucks/{id}")
-    public ResponseEntity<Ausdruck> getAusdruck(@PathVariable Long id) {
+    public ResponseEntity<AusdruckDTO> getAusdruck(@PathVariable Long id) {
         log.debug("REST request to get Ausdruck : {}", id);
-        Optional<Ausdruck> ausdruck = ausdruckService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(ausdruck);
+        Optional<AusdruckDTO> ausdruckDTO = ausdruckService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(ausdruckDTO);
     }
 
     /**
      * DELETE  /ausdrucks/:id : delete the "id" ausdruck.
      *
-     * @param id the id of the ausdruck to delete
+     * @param id the id of the ausdruckDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/ausdrucks/{id}")

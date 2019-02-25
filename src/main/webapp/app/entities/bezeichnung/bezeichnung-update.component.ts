@@ -49,11 +49,11 @@ export class BezeichnungUpdateComponent implements OnInit {
             )
             .subscribe(
                 (res: ISprache[]) => {
-                    if (!this.bezeichnung.sprache || !this.bezeichnung.sprache.id) {
+                    if (!this.bezeichnung.spracheId) {
                         this.spraches = res;
                     } else {
                         this.spracheService
-                            .find(this.bezeichnung.sprache.id)
+                            .find(this.bezeichnung.spracheId)
                             .pipe(
                                 filter((subResMayBeOk: HttpResponse<ISprache>) => subResMayBeOk.ok),
                                 map((subResponse: HttpResponse<ISprache>) => subResponse.body)

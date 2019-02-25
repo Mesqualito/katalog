@@ -1,0 +1,7 @@
+Just a github hook test: will you trigger my Jenkins?
+Maybe now, with installed NodeJS-Plugin on Jenkins?
+Or now, with installed Pipeline NPM Integration - Plugin on Jenkins?
+----------------------------------------------------
+Deinstalled both Plugins again on Jenkins.
+Next try: https://wiki.jenkins.io/display/JENKINS/Nvm+Wrapper+Plugin - the nvm wrapper Plugin on Jenkins,
+configured per Job, with v10.15.1 ...

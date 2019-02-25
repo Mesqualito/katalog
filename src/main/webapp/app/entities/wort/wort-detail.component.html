@@ -5,26 +5,30 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="katalogApp.wort.intId">Int Id</span></dt>
+                <dd>
+                    <span>{{wort.intId}}</span>
+                </dd>
                 <dt><span jhiTranslate="katalogApp.wort.eWort">E Wort</span></dt>
                 <dd>
                     <span>{{wort.eWort}}</span>
                 </dd>
                 <dt><span jhiTranslate="katalogApp.wort.sprache">Sprache</span></dt>
                 <dd>
-                    <div *ngIf="wort.sprache">
-                        <a [routerLink]="['/sprache', wort.sprache?.id, 'view']">{{wort.sprache?.sprache}}</a>
+                    <div *ngIf="wort.spracheId">
+                        <a [routerLink]="['/sprache', wort.spracheId, 'view']">{{wort.spracheSprachCode}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="katalogApp.wort.gruppe">Gruppe</span></dt>
                 <dd>
-                    <div *ngIf="wort.gruppe">
-                        <a [routerLink]="['/gruppe', wort.gruppe?.id, 'view']">{{wort.gruppe?.gruppe}}</a>
+                    <div *ngIf="wort.gruppeId">
+                        <a [routerLink]="['/gruppe', wort.gruppeId, 'view']">{{wort.gruppeGruppenCode}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="katalogApp.wort.einzelwort">Einzelwort</span></dt>
                 <dd>
                     <span *ngFor="let einzelwort of wort.einzelworts; let last = last">
-                        <a [routerLink]="['/wort', einzelwort?.id, 'view' ]">{{einzelwort.wort}}</a>{{last ? '' : ', '}}
+                        <a [routerLink]="['/wort', einzelwort?.id, 'view' ]">{{einzelwort.eWort}}</a>{{last ? '' : ', '}}
                     </span>
                 </dd>
             </dl>

@@ -1,6 +1,6 @@
 package net.generica.katalog.service;
 
-import net.generica.katalog.domain.Wort;
+import net.generica.katalog.service.dto.WortDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +15,10 @@ public interface WortService {
     /**
      * Save a wort.
      *
-     * @param wort the entity to save
+     * @param wortDTO the entity to save
      * @return the persisted entity
      */
-    Wort save(Wort wort);
+    WortDTO save(WortDTO wortDTO);
 
     /**
      * Get all the worts.
@@ -26,14 +26,14 @@ public interface WortService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<Wort> findAll(Pageable pageable);
+    Page<WortDTO> findAll(Pageable pageable);
 
     /**
      * Get all the Wort with eager load of many-to-many relationships.
      *
      * @return the list of entities
      */
-    Page<Wort> findAllWithEagerRelationships(Pageable pageable);
+    Page<WortDTO> findAllWithEagerRelationships(Pageable pageable);
     
     /**
      * Get the "id" wort.
@@ -41,7 +41,7 @@ public interface WortService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Wort> findOne(Long id);
+    Optional<WortDTO> findOne(Long id);
 
     /**
      * Delete the "id" wort.

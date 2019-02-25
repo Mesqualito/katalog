@@ -23,6 +23,30 @@ import { RouterModule } from '@angular/router';
             {
                 path: 'ausdruck',
                 loadChildren: './ausdruck/ausdruck.module#KatalogAusdruckModule'
+            },
+            {
+                path: 'wort',
+                loadChildren: './wort/wort.module#KatalogWortModule'
+            },
+            {
+                path: 'bezeichnung',
+                loadChildren: './bezeichnung/bezeichnung.module#KatalogBezeichnungModule'
+            },
+            {
+                path: 'ausdruck',
+                loadChildren: './ausdruck/ausdruck.module#KatalogAusdruckModule'
+            },
+            {
+                path: 'wort',
+                loadChildren: './wort/wort.module#KatalogWortModule'
+            },
+            {
+                path: 'wort',
+                loadChildren: './wort/wort.module#KatalogWortModule'
+            },
+            {
+                path: 'ausdruck',
+                loadChildren: './ausdruck/ausdruck.module#KatalogAusdruckModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])

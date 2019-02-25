@@ -5,6 +5,8 @@ import net.generica.katalog.KatalogApp;
 import net.generica.katalog.domain.Gruppe;
 import net.generica.katalog.repository.GruppeRepository;
 import net.generica.katalog.service.GruppeService;
+import net.generica.katalog.service.dto.GruppeDTO;
+import net.generica.katalog.service.mapper.GruppeMapper;
 import net.generica.katalog.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -49,6 +51,9 @@ public class GruppeResourceIntTest {
 
     @Autowired
     private GruppeRepository gruppeRepository;
+
+    @Autowired
+    private GruppeMapper gruppeMapper;
 
     @Autowired
     private GruppeService gruppeService;
@@ -108,9 +113,10 @@ public class GruppeResourceIntTest {
         int databaseSizeBeforeCreate = gruppeRepository.findAll().size();
 
         // Create the Gruppe
+        GruppeDTO gruppeDTO = gruppeMapper.toDto(gruppe);
         restGruppeMockMvc.perform(post("/api/gruppes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(gruppe)))
+            .content(TestUtil.convertObjectToJsonBytes(gruppeDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Gruppe in the database
@@ -128,11 +134,12 @@ public class GruppeResourceIntTest {
 
         // Create the Gruppe with an existing ID
         gruppe.setId(1L);
+        GruppeDTO gruppeDTO = gruppeMapper.toDto(gruppe);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restGruppeMockMvc.perform(post("/api/gruppes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(gruppe)))
+            .content(TestUtil.convertObjectToJsonBytes(gruppeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Gruppe in the database
@@ -148,10 +155,11 @@ public class GruppeResourceIntTest {
         gruppe.setGruppenCode(null);
 
         // Create the Gruppe, which fails.
+        GruppeDTO gruppeDTO = gruppeMapper.toDto(gruppe);
 
         restGruppeMockMvc.perform(post("/api/gruppes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(gruppe)))
+            .content(TestUtil.convertObjectToJsonBytes(gruppeDTO)))
             .andExpect(status().isBadRequest());
 
         List<Gruppe> gruppeList = gruppeRepository.findAll();
@@ -200,7 +208,7 @@ public class GruppeResourceIntTest {
     @Transactional
     public void updateGruppe() throws Exception {
         // Initialize the database
-        gruppeService.save(gruppe);
+        gruppeRepository.saveAndFlush(gruppe);
 
         int databaseSizeBeforeUpdate = gruppeRepository.findAll().size();
 
@@ -211,10 +219,11 @@ public class GruppeResourceIntTest {
         updatedGruppe
             .gruppenCode(UPDATED_GRUPPEN_CODE)
             .gruppenBezeichnung(UPDATED_GRUPPEN_BEZEICHNUNG);
+        GruppeDTO gruppeDTO = gruppeMapper.toDto(updatedGruppe);
 
         restGruppeMockMvc.perform(put("/api/gruppes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedGruppe)))
+            .content(TestUtil.convertObjectToJsonBytes(gruppeDTO)))
             .andExpect(status().isOk());
 
         // Validate the Gruppe in the database
@@ -231,11 +240,12 @@ public class GruppeResourceIntTest {
         int databaseSizeBeforeUpdate = gruppeRepository.findAll().size();
 
         // Create the Gruppe
+        GruppeDTO gruppeDTO = gruppeMapper.toDto(gruppe);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restGruppeMockMvc.perform(put("/api/gruppes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(gruppe)))
+            .content(TestUtil.convertObjectToJsonBytes(gruppeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Gruppe in the database
@@ -247,7 +257,7 @@ public class GruppeResourceIntTest {
     @Transactional
     public void deleteGruppe() throws Exception {
         // Initialize the database
-        gruppeService.save(gruppe);
+        gruppeRepository.saveAndFlush(gruppe);
 
         int databaseSizeBeforeDelete = gruppeRepository.findAll().size();
 
@@ -274,5 +284,28 @@ public class GruppeResourceIntTest {
         assertThat(gruppe1).isNotEqualTo(gruppe2);
         gruppe1.setId(null);
         assertThat(gruppe1).isNotEqualTo(gruppe2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(GruppeDTO.class);
+        GruppeDTO gruppeDTO1 = new GruppeDTO();
+        gruppeDTO1.setId(1L);
+        GruppeDTO gruppeDTO2 = new GruppeDTO();
+        assertThat(gruppeDTO1).isNotEqualTo(gruppeDTO2);
+        gruppeDTO2.setId(gruppeDTO1.getId());
+        assertThat(gruppeDTO1).isEqualTo(gruppeDTO2);
+        gruppeDTO2.setId(2L);
+        assertThat(gruppeDTO1).isNotEqualTo(gruppeDTO2);
+        gruppeDTO1.setId(null);
+        assertThat(gruppeDTO1).isNotEqualTo(gruppeDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(gruppeMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(gruppeMapper.fromId(null)).isNull();
     }
 }

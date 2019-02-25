@@ -1,9 +1,9 @@
 package net.generica.katalog.web.rest;
-import net.generica.katalog.domain.Gruppe;
 import net.generica.katalog.service.GruppeService;
 import net.generica.katalog.web.rest.errors.BadRequestAlertException;
 import net.generica.katalog.web.rest.util.HeaderUtil;
 import net.generica.katalog.web.rest.util.PaginationUtil;
+import net.generica.katalog.service.dto.GruppeDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,17 +41,17 @@ public class GruppeResource {
     /**
      * POST  /gruppes : Create a new gruppe.
      *
-     * @param gruppe the gruppe to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new gruppe, or with status 400 (Bad Request) if the gruppe has already an ID
+     * @param gruppeDTO the gruppeDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new gruppeDTO, or with status 400 (Bad Request) if the gruppe has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/gruppes")
-    public ResponseEntity<Gruppe> createGruppe(@Valid @RequestBody Gruppe gruppe) throws URISyntaxException {
-        log.debug("REST request to save Gruppe : {}", gruppe);
-        if (gruppe.getId() != null) {
+    public ResponseEntity<GruppeDTO> createGruppe(@Valid @RequestBody GruppeDTO gruppeDTO) throws URISyntaxException {
+        log.debug("REST request to save Gruppe : {}", gruppeDTO);
+        if (gruppeDTO.getId() != null) {
             throw new BadRequestAlertException("A new gruppe cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Gruppe result = gruppeService.save(gruppe);
+        GruppeDTO result = gruppeService.save(gruppeDTO);
         return ResponseEntity.created(new URI("/api/gruppes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -60,21 +60,21 @@ public class GruppeResource {
     /**
      * PUT  /gruppes : Updates an existing gruppe.
      *
-     * @param gruppe the gruppe to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated gruppe,
-     * or with status 400 (Bad Request) if the gruppe is not valid,
-     * or with status 500 (Internal Server Error) if the gruppe couldn't be updated
+     * @param gruppeDTO the gruppeDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated gruppeDTO,
+     * or with status 400 (Bad Request) if the gruppeDTO is not valid,
+     * or with status 500 (Internal Server Error) if the gruppeDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/gruppes")
-    public ResponseEntity<Gruppe> updateGruppe(@Valid @RequestBody Gruppe gruppe) throws URISyntaxException {
-        log.debug("REST request to update Gruppe : {}", gruppe);
-        if (gruppe.getId() == null) {
+    public ResponseEntity<GruppeDTO> updateGruppe(@Valid @RequestBody GruppeDTO gruppeDTO) throws URISyntaxException {
+        log.debug("REST request to update Gruppe : {}", gruppeDTO);
+        if (gruppeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Gruppe result = gruppeService.save(gruppe);
+        GruppeDTO result = gruppeService.save(gruppeDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, gruppe.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, gruppeDTO.getId().toString()))
             .body(result);
     }
 
@@ -85,9 +85,9 @@ public class GruppeResource {
      * @return the ResponseEntity with status 200 (OK) and the list of gruppes in body
      */
     @GetMapping("/gruppes")
-    public ResponseEntity<List<Gruppe>> getAllGruppes(Pageable pageable) {
+    public ResponseEntity<List<GruppeDTO>> getAllGruppes(Pageable pageable) {
         log.debug("REST request to get a page of Gruppes");
-        Page<Gruppe> page = gruppeService.findAll(pageable);
+        Page<GruppeDTO> page = gruppeService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/gruppes");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -95,20 +95,20 @@ public class GruppeResource {
     /**
      * GET  /gruppes/:id : get the "id" gruppe.
      *
-     * @param id the id of the gruppe to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the gruppe, or with status 404 (Not Found)
+     * @param id the id of the gruppeDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the gruppeDTO, or with status 404 (Not Found)
      */
     @GetMapping("/gruppes/{id}")
-    public ResponseEntity<Gruppe> getGruppe(@PathVariable Long id) {
+    public ResponseEntity<GruppeDTO> getGruppe(@PathVariable Long id) {
         log.debug("REST request to get Gruppe : {}", id);
-        Optional<Gruppe> gruppe = gruppeService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(gruppe);
+        Optional<GruppeDTO> gruppeDTO = gruppeService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(gruppeDTO);
     }
 
     /**
      * DELETE  /gruppes/:id : delete the "id" gruppe.
      *
-     * @param id the id of the gruppe to delete
+     * @param id the id of the gruppeDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/gruppes/{id}")

@@ -5,6 +5,8 @@ import net.generica.katalog.KatalogApp;
 import net.generica.katalog.domain.Wort;
 import net.generica.katalog.repository.WortRepository;
 import net.generica.katalog.service.WortService;
+import net.generica.katalog.service.dto.WortDTO;
+import net.generica.katalog.service.mapper.WortMapper;
 import net.generica.katalog.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -46,6 +48,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = KatalogApp.class)
 public class WortResourceIntTest {
 
+    private static final Long DEFAULT_INT_ID = 1L;
+    private static final Long UPDATED_INT_ID = 2L;
+
     private static final String DEFAULT_E_WORT = "AAAAAAAAAA";
     private static final String UPDATED_E_WORT = "BBBBBBBBBB";
 
@@ -54,6 +59,9 @@ public class WortResourceIntTest {
 
     @Mock
     private WortRepository wortRepositoryMock;
+
+    @Autowired
+    private WortMapper wortMapper;
 
     @Mock
     private WortService wortServiceMock;
@@ -100,6 +108,7 @@ public class WortResourceIntTest {
      */
     public static Wort createEntity(EntityManager em) {
         Wort wort = new Wort()
+            .intId(DEFAULT_INT_ID)
             .eWort(DEFAULT_E_WORT);
         return wort;
     }
@@ -115,15 +124,17 @@ public class WortResourceIntTest {
         int databaseSizeBeforeCreate = wortRepository.findAll().size();
 
         // Create the Wort
+        WortDTO wortDTO = wortMapper.toDto(wort);
         restWortMockMvc.perform(post("/api/worts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wort)))
+            .content(TestUtil.convertObjectToJsonBytes(wortDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Wort in the database
         List<Wort> wortList = wortRepository.findAll();
         assertThat(wortList).hasSize(databaseSizeBeforeCreate + 1);
         Wort testWort = wortList.get(wortList.size() - 1);
+        assertThat(testWort.getIntId()).isEqualTo(DEFAULT_INT_ID);
         assertThat(testWort.geteWort()).isEqualTo(DEFAULT_E_WORT);
     }
 
@@ -134,16 +145,36 @@ public class WortResourceIntTest {
 
         // Create the Wort with an existing ID
         wort.setId(1L);
+        WortDTO wortDTO = wortMapper.toDto(wort);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restWortMockMvc.perform(post("/api/worts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wort)))
+            .content(TestUtil.convertObjectToJsonBytes(wortDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Wort in the database
         List<Wort> wortList = wortRepository.findAll();
         assertThat(wortList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkIntIdIsRequired() throws Exception {
+        int databaseSizeBeforeTest = wortRepository.findAll().size();
+        // set the field null
+        wort.setIntId(null);
+
+        // Create the Wort, which fails.
+        WortDTO wortDTO = wortMapper.toDto(wort);
+
+        restWortMockMvc.perform(post("/api/worts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(wortDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Wort> wortList = wortRepository.findAll();
+        assertThat(wortList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -154,10 +185,11 @@ public class WortResourceIntTest {
         wort.seteWort(null);
 
         // Create the Wort, which fails.
+        WortDTO wortDTO = wortMapper.toDto(wort);
 
         restWortMockMvc.perform(post("/api/worts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wort)))
+            .content(TestUtil.convertObjectToJsonBytes(wortDTO)))
             .andExpect(status().isBadRequest());
 
         List<Wort> wortList = wortRepository.findAll();
@@ -175,6 +207,7 @@ public class WortResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wort.getId().intValue())))
+            .andExpect(jsonPath("$.[*].intId").value(hasItem(DEFAULT_INT_ID.intValue())))
             .andExpect(jsonPath("$.[*].eWort").value(hasItem(DEFAULT_E_WORT.toString())));
     }
     
@@ -222,6 +255,7 @@ public class WortResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(wort.getId().intValue()))
+            .andExpect(jsonPath("$.intId").value(DEFAULT_INT_ID.intValue()))
             .andExpect(jsonPath("$.eWort").value(DEFAULT_E_WORT.toString()));
     }
 
@@ -237,7 +271,7 @@ public class WortResourceIntTest {
     @Transactional
     public void updateWort() throws Exception {
         // Initialize the database
-        wortService.save(wort);
+        wortRepository.saveAndFlush(wort);
 
         int databaseSizeBeforeUpdate = wortRepository.findAll().size();
 
@@ -246,17 +280,20 @@ public class WortResourceIntTest {
         // Disconnect from session so that the updates on updatedWort are not directly saved in db
         em.detach(updatedWort);
         updatedWort
+            .intId(UPDATED_INT_ID)
             .eWort(UPDATED_E_WORT);
+        WortDTO wortDTO = wortMapper.toDto(updatedWort);
 
         restWortMockMvc.perform(put("/api/worts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedWort)))
+            .content(TestUtil.convertObjectToJsonBytes(wortDTO)))
             .andExpect(status().isOk());
 
         // Validate the Wort in the database
         List<Wort> wortList = wortRepository.findAll();
         assertThat(wortList).hasSize(databaseSizeBeforeUpdate);
         Wort testWort = wortList.get(wortList.size() - 1);
+        assertThat(testWort.getIntId()).isEqualTo(UPDATED_INT_ID);
         assertThat(testWort.geteWort()).isEqualTo(UPDATED_E_WORT);
     }
 
@@ -266,11 +303,12 @@ public class WortResourceIntTest {
         int databaseSizeBeforeUpdate = wortRepository.findAll().size();
 
         // Create the Wort
+        WortDTO wortDTO = wortMapper.toDto(wort);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restWortMockMvc.perform(put("/api/worts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wort)))
+            .content(TestUtil.convertObjectToJsonBytes(wortDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Wort in the database
@@ -282,7 +320,7 @@ public class WortResourceIntTest {
     @Transactional
     public void deleteWort() throws Exception {
         // Initialize the database
-        wortService.save(wort);
+        wortRepository.saveAndFlush(wort);
 
         int databaseSizeBeforeDelete = wortRepository.findAll().size();
 
@@ -309,5 +347,28 @@ public class WortResourceIntTest {
         assertThat(wort1).isNotEqualTo(wort2);
         wort1.setId(null);
         assertThat(wort1).isNotEqualTo(wort2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(WortDTO.class);
+        WortDTO wortDTO1 = new WortDTO();
+        wortDTO1.setId(1L);
+        WortDTO wortDTO2 = new WortDTO();
+        assertThat(wortDTO1).isNotEqualTo(wortDTO2);
+        wortDTO2.setId(wortDTO1.getId());
+        assertThat(wortDTO1).isEqualTo(wortDTO2);
+        wortDTO2.setId(2L);
+        assertThat(wortDTO1).isNotEqualTo(wortDTO2);
+        wortDTO1.setId(null);
+        assertThat(wortDTO1).isNotEqualTo(wortDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(wortMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(wortMapper.fromId(null)).isNull();
     }
 }

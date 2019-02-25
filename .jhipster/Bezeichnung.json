@@ -14,7 +14,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "sprache",
             "otherEntityName": "sprache",
-            "otherEntityField": "sprache",
+            "otherEntityField": "sprachCode",
             "ownerSide": true,
             "otherEntityRelationshipName": "bezeichnung"
         },
@@ -22,7 +22,7 @@
             "relationshipType": "many-to-one",
             "relationshipName": "gruppe",
             "otherEntityName": "gruppe",
-            "otherEntityField": "gruppe",
+            "otherEntityField": "gruppenCode",
             "otherEntityRelationshipName": "bezeichnung"
         },
         {
@@ -30,13 +30,13 @@
             "otherEntityRelationshipName": "bezeichnung",
             "relationshipName": "einzelwort",
             "otherEntityName": "wort",
-            "otherEntityField": "wort",
+            "otherEntityField": "eWort",
             "ownerSide": true
         }
     ],
-    "changelogDate": "20190212094902",
+    "changelogDate": "20190213134134",
     "entityTableName": "bezeichnung",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

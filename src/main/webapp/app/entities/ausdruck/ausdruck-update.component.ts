@@ -49,11 +49,11 @@ export class AusdruckUpdateComponent implements OnInit {
             )
             .subscribe(
                 (res: ISprache[]) => {
-                    if (!this.ausdruck.sprache || !this.ausdruck.sprache.id) {
+                    if (!this.ausdruck.spracheId) {
                         this.spraches = res;
                     } else {
                         this.spracheService
-                            .find(this.ausdruck.sprache.id)
+                            .find(this.ausdruck.spracheId)
                             .pipe(
                                 filter((subResMayBeOk: HttpResponse<ISprache>) => subResMayBeOk.ok),
                                 map((subResponse: HttpResponse<ISprache>) => subResponse.body)

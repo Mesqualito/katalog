@@ -15,6 +15,7 @@
             "detail": {
                 "title": "Wort"
             },
+            "intId": "Int Id",
             "eWort": "E Wort",
             "sprache": "Sprache",
             "gruppe": "Gruppe",

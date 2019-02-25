@@ -11,20 +11,20 @@
                 </dd>
                 <dt><span jhiTranslate="katalogApp.bezeichnung.sprache">Sprache</span></dt>
                 <dd>
-                    <div *ngIf="bezeichnung.sprache">
-                        <a [routerLink]="['/sprache', bezeichnung.sprache?.id, 'view']">{{bezeichnung.sprache?.sprache}}</a>
+                    <div *ngIf="bezeichnung.spracheId">
+                        <a [routerLink]="['/sprache', bezeichnung.spracheId, 'view']">{{bezeichnung.spracheSprachCode}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="katalogApp.bezeichnung.gruppe">Gruppe</span></dt>
                 <dd>
-                    <div *ngIf="bezeichnung.gruppe">
-                        <a [routerLink]="['/gruppe', bezeichnung.gruppe?.id, 'view']">{{bezeichnung.gruppe?.gruppe}}</a>
+                    <div *ngIf="bezeichnung.gruppeId">
+                        <a [routerLink]="['/gruppe', bezeichnung.gruppeId, 'view']">{{bezeichnung.gruppeGruppenCode}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="katalogApp.bezeichnung.einzelwort">Einzelwort</span></dt>
                 <dd>
                     <span *ngFor="let einzelwort of bezeichnung.einzelworts; let last = last">
-                        <a [routerLink]="['/wort', einzelwort?.id, 'view' ]">{{einzelwort.wort}}</a>{{last ? '' : ', '}}
+                        <a [routerLink]="['/wort', einzelwort?.id, 'view' ]">{{einzelwort.eWort}}</a>{{last ? '' : ', '}}
                     </span>
                 </dd>
             </dl>

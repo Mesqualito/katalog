@@ -16,8 +16,8 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="bezeichnung"><span jhiTranslate="katalogApp.bezeichnung.bezeichnung">Bezeichnung</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="sprache.sprache"><span jhiTranslate="katalogApp.bezeichnung.sprache">Sprache</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="gruppe.gruppe"><span jhiTranslate="katalogApp.bezeichnung.gruppe">Gruppe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="spracheSprachCode"><span jhiTranslate="katalogApp.bezeichnung.sprache">Sprache</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="gruppeGruppenCode"><span jhiTranslate="katalogApp.bezeichnung.gruppe">Gruppe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -26,13 +26,13 @@
                 <td><a [routerLink]="['/bezeichnung', bezeichnung.id, 'view' ]">{{bezeichnung.id}}</a></td>
                 <td>{{bezeichnung.bezeichnung}}</td>
                 <td>
-                    <div *ngIf="bezeichnung.sprache">
-                        <a [routerLink]="['../sprache', bezeichnung.sprache?.id, 'view' ]" >{{bezeichnung.sprache?.sprache}}</a>
+                    <div *ngIf="bezeichnung.spracheId">
+                        <a [routerLink]="['../sprache', bezeichnung.spracheId , 'view' ]" >{{bezeichnung.spracheSprachCode}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="bezeichnung.gruppe">
-                        <a [routerLink]="['../gruppe', bezeichnung.gruppe?.id, 'view' ]" >{{bezeichnung.gruppe?.gruppe}}</a>
+                    <div *ngIf="bezeichnung.gruppeId">
+                        <a [routerLink]="['../gruppe', bezeichnung.gruppeId , 'view' ]" >{{bezeichnung.gruppeGruppenCode}}</a>
                     </div>
                 </td>
                 <td class="text-right">

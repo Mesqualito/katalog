@@ -1,9 +1,9 @@
 package net.generica.katalog.web.rest;
-import net.generica.katalog.domain.Wort;
 import net.generica.katalog.service.WortService;
 import net.generica.katalog.web.rest.errors.BadRequestAlertException;
 import net.generica.katalog.web.rest.util.HeaderUtil;
 import net.generica.katalog.web.rest.util.PaginationUtil;
+import net.generica.katalog.service.dto.WortDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,17 +41,17 @@ public class WortResource {
     /**
      * POST  /worts : Create a new wort.
      *
-     * @param wort the wort to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new wort, or with status 400 (Bad Request) if the wort has already an ID
+     * @param wortDTO the wortDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new wortDTO, or with status 400 (Bad Request) if the wort has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/worts")
-    public ResponseEntity<Wort> createWort(@Valid @RequestBody Wort wort) throws URISyntaxException {
-        log.debug("REST request to save Wort : {}", wort);
-        if (wort.getId() != null) {
+    public ResponseEntity<WortDTO> createWort(@Valid @RequestBody WortDTO wortDTO) throws URISyntaxException {
+        log.debug("REST request to save Wort : {}", wortDTO);
+        if (wortDTO.getId() != null) {
             throw new BadRequestAlertException("A new wort cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Wort result = wortService.save(wort);
+        WortDTO result = wortService.save(wortDTO);
         return ResponseEntity.created(new URI("/api/worts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -60,21 +60,21 @@ public class WortResource {
     /**
      * PUT  /worts : Updates an existing wort.
      *
-     * @param wort the wort to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated wort,
-     * or with status 400 (Bad Request) if the wort is not valid,
-     * or with status 500 (Internal Server Error) if the wort couldn't be updated
+     * @param wortDTO the wortDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated wortDTO,
+     * or with status 400 (Bad Request) if the wortDTO is not valid,
+     * or with status 500 (Internal Server Error) if the wortDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/worts")
-    public ResponseEntity<Wort> updateWort(@Valid @RequestBody Wort wort) throws URISyntaxException {
-        log.debug("REST request to update Wort : {}", wort);
-        if (wort.getId() == null) {
+    public ResponseEntity<WortDTO> updateWort(@Valid @RequestBody WortDTO wortDTO) throws URISyntaxException {
+        log.debug("REST request to update Wort : {}", wortDTO);
+        if (wortDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Wort result = wortService.save(wort);
+        WortDTO result = wortService.save(wortDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wort.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wortDTO.getId().toString()))
             .body(result);
     }
 
@@ -86,9 +86,9 @@ public class WortResource {
      * @return the ResponseEntity with status 200 (OK) and the list of worts in body
      */
     @GetMapping("/worts")
-    public ResponseEntity<List<Wort>> getAllWorts(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public ResponseEntity<List<WortDTO>> getAllWorts(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of Worts");
-        Page<Wort> page;
+        Page<WortDTO> page;
         if (eagerload) {
             page = wortService.findAllWithEagerRelationships(pageable);
         } else {
@@ -101,20 +101,20 @@ public class WortResource {
     /**
      * GET  /worts/:id : get the "id" wort.
      *
-     * @param id the id of the wort to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the wort, or with status 404 (Not Found)
+     * @param id the id of the wortDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the wortDTO, or with status 404 (Not Found)
      */
     @GetMapping("/worts/{id}")
-    public ResponseEntity<Wort> getWort(@PathVariable Long id) {
+    public ResponseEntity<WortDTO> getWort(@PathVariable Long id) {
         log.debug("REST request to get Wort : {}", id);
-        Optional<Wort> wort = wortService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(wort);
+        Optional<WortDTO> wortDTO = wortService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(wortDTO);
     }
 
     /**
      * DELETE  /worts/:id : delete the "id" wort.
      *
-     * @param id the id of the wort to delete
+     * @param id the id of the wortDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/worts/{id}")

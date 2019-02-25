@@ -5,6 +5,8 @@ import net.generica.katalog.KatalogApp;
 import net.generica.katalog.domain.Sprache;
 import net.generica.katalog.repository.SpracheRepository;
 import net.generica.katalog.service.SpracheService;
+import net.generica.katalog.service.dto.SpracheDTO;
+import net.generica.katalog.service.mapper.SpracheMapper;
 import net.generica.katalog.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -49,6 +51,9 @@ public class SpracheResourceIntTest {
 
     @Autowired
     private SpracheRepository spracheRepository;
+
+    @Autowired
+    private SpracheMapper spracheMapper;
 
     @Autowired
     private SpracheService spracheService;
@@ -108,9 +113,10 @@ public class SpracheResourceIntTest {
         int databaseSizeBeforeCreate = spracheRepository.findAll().size();
 
         // Create the Sprache
+        SpracheDTO spracheDTO = spracheMapper.toDto(sprache);
         restSpracheMockMvc.perform(post("/api/spraches")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sprache)))
+            .content(TestUtil.convertObjectToJsonBytes(spracheDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Sprache in the database
@@ -128,11 +134,12 @@ public class SpracheResourceIntTest {
 
         // Create the Sprache with an existing ID
         sprache.setId(1L);
+        SpracheDTO spracheDTO = spracheMapper.toDto(sprache);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSpracheMockMvc.perform(post("/api/spraches")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sprache)))
+            .content(TestUtil.convertObjectToJsonBytes(spracheDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Sprache in the database
@@ -148,10 +155,11 @@ public class SpracheResourceIntTest {
         sprache.setSprachCode(null);
 
         // Create the Sprache, which fails.
+        SpracheDTO spracheDTO = spracheMapper.toDto(sprache);
 
         restSpracheMockMvc.perform(post("/api/spraches")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sprache)))
+            .content(TestUtil.convertObjectToJsonBytes(spracheDTO)))
             .andExpect(status().isBadRequest());
 
         List<Sprache> spracheList = spracheRepository.findAll();
@@ -200,7 +208,7 @@ public class SpracheResourceIntTest {
     @Transactional
     public void updateSprache() throws Exception {
         // Initialize the database
-        spracheService.save(sprache);
+        spracheRepository.saveAndFlush(sprache);
 
         int databaseSizeBeforeUpdate = spracheRepository.findAll().size();
 
@@ -211,10 +219,11 @@ public class SpracheResourceIntTest {
         updatedSprache
             .sprachCode(UPDATED_SPRACH_CODE)
             .sprachBezeichnung(UPDATED_SPRACH_BEZEICHNUNG);
+        SpracheDTO spracheDTO = spracheMapper.toDto(updatedSprache);
 
         restSpracheMockMvc.perform(put("/api/spraches")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSprache)))
+            .content(TestUtil.convertObjectToJsonBytes(spracheDTO)))
             .andExpect(status().isOk());
 
         // Validate the Sprache in the database
@@ -231,11 +240,12 @@ public class SpracheResourceIntTest {
         int databaseSizeBeforeUpdate = spracheRepository.findAll().size();
 
         // Create the Sprache
+        SpracheDTO spracheDTO = spracheMapper.toDto(sprache);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSpracheMockMvc.perform(put("/api/spraches")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(sprache)))
+            .content(TestUtil.convertObjectToJsonBytes(spracheDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Sprache in the database
@@ -247,7 +257,7 @@ public class SpracheResourceIntTest {
     @Transactional
     public void deleteSprache() throws Exception {
         // Initialize the database
-        spracheService.save(sprache);
+        spracheRepository.saveAndFlush(sprache);
 
         int databaseSizeBeforeDelete = spracheRepository.findAll().size();
 
@@ -274,5 +284,28 @@ public class SpracheResourceIntTest {
         assertThat(sprache1).isNotEqualTo(sprache2);
         sprache1.setId(null);
         assertThat(sprache1).isNotEqualTo(sprache2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(SpracheDTO.class);
+        SpracheDTO spracheDTO1 = new SpracheDTO();
+        spracheDTO1.setId(1L);
+        SpracheDTO spracheDTO2 = new SpracheDTO();
+        assertThat(spracheDTO1).isNotEqualTo(spracheDTO2);
+        spracheDTO2.setId(spracheDTO1.getId());
+        assertThat(spracheDTO1).isEqualTo(spracheDTO2);
+        spracheDTO2.setId(2L);
+        assertThat(spracheDTO1).isNotEqualTo(spracheDTO2);
+        spracheDTO1.setId(null);
+        assertThat(spracheDTO1).isNotEqualTo(spracheDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(spracheMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(spracheMapper.fromId(null)).isNull();
     }
 }

@@ -1,6 +1,6 @@
 package net.generica.katalog.service;
 
-import net.generica.katalog.domain.Sprache;
+import net.generica.katalog.service.dto.SpracheDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +15,10 @@ public interface SpracheService {
     /**
      * Save a sprache.
      *
-     * @param sprache the entity to save
+     * @param spracheDTO the entity to save
      * @return the persisted entity
      */
-    Sprache save(Sprache sprache);
+    SpracheDTO save(SpracheDTO spracheDTO);
 
     /**
      * Get all the spraches.
@@ -26,7 +26,7 @@ public interface SpracheService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<Sprache> findAll(Pageable pageable);
+    Page<SpracheDTO> findAll(Pageable pageable);
 
 
     /**
@@ -35,7 +35,7 @@ public interface SpracheService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Sprache> findOne(Long id);
+    Optional<SpracheDTO> findOne(Long id);
 
     /**
      * Delete the "id" sprache.

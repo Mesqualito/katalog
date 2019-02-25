@@ -12,27 +12,33 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="katalogApp.ausdruck.ausdruck" for="field_ausdruck">Ausdruck</label>
                     <input type="text" class="form-control" name="ausdruck" id="field_ausdruck"
-                        [(ngModel)]="ausdruck.ausdruck" />
+                        [(ngModel)]="ausdruck.ausdruck" required/>
+                    <div [hidden]="!(editForm.controls.ausdruck?.dirty && editForm.controls.ausdruck?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.ausdruck?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="katalogApp.ausdruck.sprache" for="field_sprache">Sprache</label>
-                    <select class="form-control" id="field_sprache" name="sprache" [(ngModel)]="ausdruck.sprache">
+                    <select class="form-control" id="field_sprache" name="sprache" [(ngModel)]="ausdruck.spracheId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="spracheOption.id === ausdruck.sprache?.id ? ausdruck.sprache : spracheOption" *ngFor="let spracheOption of spraches; trackBy: trackSpracheById">{{spracheOption.sprache}}</option>
+                        <option [ngValue]="spracheOption.id" *ngFor="let spracheOption of spraches; trackBy: trackSpracheById">{{spracheOption.sprachCode}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="katalogApp.ausdruck.gruppe" for="field_gruppe">Gruppe</label>
-                    <select class="form-control" id="field_gruppe" name="gruppe" [(ngModel)]="ausdruck.gruppe" >
+                    <select class="form-control" id="field_gruppe" name="gruppe" [(ngModel)]="ausdruck.gruppeId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="gruppeOption.id === ausdruck.gruppe?.id ? ausdruck.gruppe : gruppeOption" *ngFor="let gruppeOption of gruppes; trackBy: trackGruppeById">{{gruppeOption.gruppe}}</option>
+                        <option [ngValue]="gruppeOption.id" *ngFor="let gruppeOption of gruppes; trackBy: trackGruppeById">{{gruppeOption.gruppenCode}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label jhiTranslate="katalogApp.ausdruck.einzelwort" for="field_einzelwort">Einzelwort</label>
                     <select class="form-control" id="field_einzelwort" multiple name="einzelwort" [(ngModel)]="ausdruck.einzelworts">
-                        <option [ngValue]="getSelected(ausdruck.einzelworts, wortOption)" *ngFor="let wortOption of worts; trackBy: trackWortById">{{wortOption.wort}}</option>
+                        <option [ngValue]="getSelected(ausdruck.einzelworts, wortOption)" *ngFor="let wortOption of worts; trackBy: trackWortById">{{wortOption.eWort}}</option>
                     </select>
                 </div>
             </div>

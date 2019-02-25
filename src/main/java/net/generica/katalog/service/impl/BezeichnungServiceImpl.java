@@ -3,6 +3,8 @@ package net.generica.katalog.service.impl;
 import net.generica.katalog.service.BezeichnungService;
 import net.generica.katalog.domain.Bezeichnung;
 import net.generica.katalog.repository.BezeichnungRepository;
+import net.generica.katalog.service.dto.BezeichnungDTO;
+import net.generica.katalog.service.mapper.BezeichnungMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,20 +26,25 @@ public class BezeichnungServiceImpl implements BezeichnungService {
 
     private final BezeichnungRepository bezeichnungRepository;
 
-    public BezeichnungServiceImpl(BezeichnungRepository bezeichnungRepository) {
+    private final BezeichnungMapper bezeichnungMapper;
+
+    public BezeichnungServiceImpl(BezeichnungRepository bezeichnungRepository, BezeichnungMapper bezeichnungMapper) {
         this.bezeichnungRepository = bezeichnungRepository;
+        this.bezeichnungMapper = bezeichnungMapper;
     }
 
     /**
      * Save a bezeichnung.
      *
-     * @param bezeichnung the entity to save
+     * @param bezeichnungDTO the entity to save
      * @return the persisted entity
      */
     @Override
-    public Bezeichnung save(Bezeichnung bezeichnung) {
-        log.debug("Request to save Bezeichnung : {}", bezeichnung);
-        return bezeichnungRepository.save(bezeichnung);
+    public BezeichnungDTO save(BezeichnungDTO bezeichnungDTO) {
+        log.debug("Request to save Bezeichnung : {}", bezeichnungDTO);
+        Bezeichnung bezeichnung = bezeichnungMapper.toEntity(bezeichnungDTO);
+        bezeichnung = bezeichnungRepository.save(bezeichnung);
+        return bezeichnungMapper.toDto(bezeichnung);
     }
 
     /**
@@ -48,9 +55,10 @@ public class BezeichnungServiceImpl implements BezeichnungService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Bezeichnung> findAll(Pageable pageable) {
+    public Page<BezeichnungDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Bezeichnungs");
-        return bezeichnungRepository.findAll(pageable);
+        return bezeichnungRepository.findAll(pageable)
+            .map(bezeichnungMapper::toDto);
     }
 
     /**
@@ -58,8 +66,8 @@ public class BezeichnungServiceImpl implements BezeichnungService {
      *
      * @return the list of entities
      */
-    public Page<Bezeichnung> findAllWithEagerRelationships(Pageable pageable) {
-        return bezeichnungRepository.findAllWithEagerRelationships(pageable);
+    public Page<BezeichnungDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return bezeichnungRepository.findAllWithEagerRelationships(pageable).map(bezeichnungMapper::toDto);
     }
     
 
@@ -71,9 +79,10 @@ public class BezeichnungServiceImpl implements BezeichnungService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Bezeichnung> findOne(Long id) {
+    public Optional<BezeichnungDTO> findOne(Long id) {
         log.debug("Request to get Bezeichnung : {}", id);
-        return bezeichnungRepository.findOneWithEagerRelationships(id);
+        return bezeichnungRepository.findOneWithEagerRelationships(id)
+            .map(bezeichnungMapper::toDto);
     }
 
     /**

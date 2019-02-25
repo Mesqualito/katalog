@@ -5,6 +5,8 @@ import net.generica.katalog.KatalogApp;
 import net.generica.katalog.domain.Ausdruck;
 import net.generica.katalog.repository.AusdruckRepository;
 import net.generica.katalog.service.AusdruckService;
+import net.generica.katalog.service.dto.AusdruckDTO;
+import net.generica.katalog.service.mapper.AusdruckMapper;
 import net.generica.katalog.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -54,6 +56,9 @@ public class AusdruckResourceIntTest {
 
     @Mock
     private AusdruckRepository ausdruckRepositoryMock;
+
+    @Autowired
+    private AusdruckMapper ausdruckMapper;
 
     @Mock
     private AusdruckService ausdruckServiceMock;
@@ -115,9 +120,10 @@ public class AusdruckResourceIntTest {
         int databaseSizeBeforeCreate = ausdruckRepository.findAll().size();
 
         // Create the Ausdruck
+        AusdruckDTO ausdruckDTO = ausdruckMapper.toDto(ausdruck);
         restAusdruckMockMvc.perform(post("/api/ausdrucks")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ausdruck)))
+            .content(TestUtil.convertObjectToJsonBytes(ausdruckDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Ausdruck in the database
@@ -134,16 +140,36 @@ public class AusdruckResourceIntTest {
 
         // Create the Ausdruck with an existing ID
         ausdruck.setId(1L);
+        AusdruckDTO ausdruckDTO = ausdruckMapper.toDto(ausdruck);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAusdruckMockMvc.perform(post("/api/ausdrucks")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ausdruck)))
+            .content(TestUtil.convertObjectToJsonBytes(ausdruckDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Ausdruck in the database
         List<Ausdruck> ausdruckList = ausdruckRepository.findAll();
         assertThat(ausdruckList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkAusdruckIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ausdruckRepository.findAll().size();
+        // set the field null
+        ausdruck.setAusdruck(null);
+
+        // Create the Ausdruck, which fails.
+        AusdruckDTO ausdruckDTO = ausdruckMapper.toDto(ausdruck);
+
+        restAusdruckMockMvc.perform(post("/api/ausdrucks")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ausdruckDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Ausdruck> ausdruckList = ausdruckRepository.findAll();
+        assertThat(ausdruckList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -219,7 +245,7 @@ public class AusdruckResourceIntTest {
     @Transactional
     public void updateAusdruck() throws Exception {
         // Initialize the database
-        ausdruckService.save(ausdruck);
+        ausdruckRepository.saveAndFlush(ausdruck);
 
         int databaseSizeBeforeUpdate = ausdruckRepository.findAll().size();
 
@@ -229,10 +255,11 @@ public class AusdruckResourceIntTest {
         em.detach(updatedAusdruck);
         updatedAusdruck
             .ausdruck(UPDATED_AUSDRUCK);
+        AusdruckDTO ausdruckDTO = ausdruckMapper.toDto(updatedAusdruck);
 
         restAusdruckMockMvc.perform(put("/api/ausdrucks")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedAusdruck)))
+            .content(TestUtil.convertObjectToJsonBytes(ausdruckDTO)))
             .andExpect(status().isOk());
 
         // Validate the Ausdruck in the database
@@ -248,11 +275,12 @@ public class AusdruckResourceIntTest {
         int databaseSizeBeforeUpdate = ausdruckRepository.findAll().size();
 
         // Create the Ausdruck
+        AusdruckDTO ausdruckDTO = ausdruckMapper.toDto(ausdruck);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAusdruckMockMvc.perform(put("/api/ausdrucks")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ausdruck)))
+            .content(TestUtil.convertObjectToJsonBytes(ausdruckDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Ausdruck in the database
@@ -264,7 +292,7 @@ public class AusdruckResourceIntTest {
     @Transactional
     public void deleteAusdruck() throws Exception {
         // Initialize the database
-        ausdruckService.save(ausdruck);
+        ausdruckRepository.saveAndFlush(ausdruck);
 
         int databaseSizeBeforeDelete = ausdruckRepository.findAll().size();
 
@@ -291,5 +319,28 @@ public class AusdruckResourceIntTest {
         assertThat(ausdruck1).isNotEqualTo(ausdruck2);
         ausdruck1.setId(null);
         assertThat(ausdruck1).isNotEqualTo(ausdruck2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(AusdruckDTO.class);
+        AusdruckDTO ausdruckDTO1 = new AusdruckDTO();
+        ausdruckDTO1.setId(1L);
+        AusdruckDTO ausdruckDTO2 = new AusdruckDTO();
+        assertThat(ausdruckDTO1).isNotEqualTo(ausdruckDTO2);
+        ausdruckDTO2.setId(ausdruckDTO1.getId());
+        assertThat(ausdruckDTO1).isEqualTo(ausdruckDTO2);
+        ausdruckDTO2.setId(2L);
+        assertThat(ausdruckDTO1).isNotEqualTo(ausdruckDTO2);
+        ausdruckDTO1.setId(null);
+        assertThat(ausdruckDTO1).isNotEqualTo(ausdruckDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(ausdruckMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(ausdruckMapper.fromId(null)).isNull();
     }
 }

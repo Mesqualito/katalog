@@ -1,6 +1,6 @@
 package net.generica.katalog.service;
 
-import net.generica.katalog.domain.Ausdruck;
+import net.generica.katalog.service.dto.AusdruckDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +15,10 @@ public interface AusdruckService {
     /**
      * Save a ausdruck.
      *
-     * @param ausdruck the entity to save
+     * @param ausdruckDTO the entity to save
      * @return the persisted entity
      */
-    Ausdruck save(Ausdruck ausdruck);
+    AusdruckDTO save(AusdruckDTO ausdruckDTO);
 
     /**
      * Get all the ausdrucks.
@@ -26,14 +26,14 @@ public interface AusdruckService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<Ausdruck> findAll(Pageable pageable);
+    Page<AusdruckDTO> findAll(Pageable pageable);
 
     /**
      * Get all the Ausdruck with eager load of many-to-many relationships.
      *
      * @return the list of entities
      */
-    Page<Ausdruck> findAllWithEagerRelationships(Pageable pageable);
+    Page<AusdruckDTO> findAllWithEagerRelationships(Pageable pageable);
     
     /**
      * Get the "id" ausdruck.
@@ -41,7 +41,7 @@ public interface AusdruckService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Ausdruck> findOne(Long id);
+    Optional<AusdruckDTO> findOne(Long id);
 
     /**
      * Delete the "id" ausdruck.

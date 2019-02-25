@@ -56,11 +56,11 @@ export class WortUpdateComponent implements OnInit {
             )
             .subscribe(
                 (res: ISprache[]) => {
-                    if (!this.wort.sprache || !this.wort.sprache.id) {
+                    if (!this.wort.spracheId) {
                         this.spraches = res;
                     } else {
                         this.spracheService
-                            .find(this.wort.sprache.id)
+                            .find(this.wort.spracheId)
                             .pipe(
                                 filter((subResMayBeOk: HttpResponse<ISprache>) => subResMayBeOk.ok),
                                 map((subResponse: HttpResponse<ISprache>) => subResponse.body)

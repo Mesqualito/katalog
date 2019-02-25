@@ -1,6 +1,6 @@
 package net.generica.katalog.service;
 
-import net.generica.katalog.domain.Bezeichnung;
+import net.generica.katalog.service.dto.BezeichnungDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +15,10 @@ public interface BezeichnungService {
     /**
      * Save a bezeichnung.
      *
-     * @param bezeichnung the entity to save
+     * @param bezeichnungDTO the entity to save
      * @return the persisted entity
      */
-    Bezeichnung save(Bezeichnung bezeichnung);
+    BezeichnungDTO save(BezeichnungDTO bezeichnungDTO);
 
     /**
      * Get all the bezeichnungs.
@@ -26,14 +26,14 @@ public interface BezeichnungService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<Bezeichnung> findAll(Pageable pageable);
+    Page<BezeichnungDTO> findAll(Pageable pageable);
 
     /**
      * Get all the Bezeichnung with eager load of many-to-many relationships.
      *
      * @return the list of entities
      */
-    Page<Bezeichnung> findAllWithEagerRelationships(Pageable pageable);
+    Page<BezeichnungDTO> findAllWithEagerRelationships(Pageable pageable);
     
     /**
      * Get the "id" bezeichnung.
@@ -41,7 +41,7 @@ public interface BezeichnungService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Bezeichnung> findOne(Long id);
+    Optional<BezeichnungDTO> findOne(Long id);
 
     /**
      * Delete the "id" bezeichnung.

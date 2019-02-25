@@ -30,6 +30,10 @@ public class Wort implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "int_id", nullable = false)
+    private Long intId;
+
+    @NotNull
     @Column(name = "e_wort", nullable = false)
     private String eWort;
 
@@ -70,6 +74,19 @@ public class Wort implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getIntId() {
+        return intId;
+    }
+
+    public Wort intId(Long intId) {
+        this.intId = intId;
+        return this;
+    }
+
+    public void setIntId(Long intId) {
+        this.intId = intId;
     }
 
     public String geteWort() {
@@ -236,6 +253,7 @@ public class Wort implements Serializable {
     public String toString() {
         return "Wort{" +
             "id=" + getId() +
+            ", intId=" + getIntId() +
             ", eWort='" + geteWort() + "'" +
             "}";
     }

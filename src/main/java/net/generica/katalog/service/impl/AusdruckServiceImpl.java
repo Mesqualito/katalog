@@ -3,6 +3,8 @@ package net.generica.katalog.service.impl;
 import net.generica.katalog.service.AusdruckService;
 import net.generica.katalog.domain.Ausdruck;
 import net.generica.katalog.repository.AusdruckRepository;
+import net.generica.katalog.service.dto.AusdruckDTO;
+import net.generica.katalog.service.mapper.AusdruckMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,20 +26,25 @@ public class AusdruckServiceImpl implements AusdruckService {
 
     private final AusdruckRepository ausdruckRepository;
 
-    public AusdruckServiceImpl(AusdruckRepository ausdruckRepository) {
+    private final AusdruckMapper ausdruckMapper;
+
+    public AusdruckServiceImpl(AusdruckRepository ausdruckRepository, AusdruckMapper ausdruckMapper) {
         this.ausdruckRepository = ausdruckRepository;
+        this.ausdruckMapper = ausdruckMapper;
     }
 
     /**
      * Save a ausdruck.
      *
-     * @param ausdruck the entity to save
+     * @param ausdruckDTO the entity to save
      * @return the persisted entity
      */
     @Override
-    public Ausdruck save(Ausdruck ausdruck) {
-        log.debug("Request to save Ausdruck : {}", ausdruck);
-        return ausdruckRepository.save(ausdruck);
+    public AusdruckDTO save(AusdruckDTO ausdruckDTO) {
+        log.debug("Request to save Ausdruck : {}", ausdruckDTO);
+        Ausdruck ausdruck = ausdruckMapper.toEntity(ausdruckDTO);
+        ausdruck = ausdruckRepository.save(ausdruck);
+        return ausdruckMapper.toDto(ausdruck);
     }
 
     /**
@@ -48,9 +55,10 @@ public class AusdruckServiceImpl implements AusdruckService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Ausdruck> findAll(Pageable pageable) {
+    public Page<AusdruckDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Ausdrucks");
-        return ausdruckRepository.findAll(pageable);
+        return ausdruckRepository.findAll(pageable)
+            .map(ausdruckMapper::toDto);
     }
 
     /**
@@ -58,8 +66,8 @@ public class AusdruckServiceImpl implements AusdruckService {
      *
      * @return the list of entities
      */
-    public Page<Ausdruck> findAllWithEagerRelationships(Pageable pageable) {
-        return ausdruckRepository.findAllWithEagerRelationships(pageable);
+    public Page<AusdruckDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return ausdruckRepository.findAllWithEagerRelationships(pageable).map(ausdruckMapper::toDto);
     }
     
 
@@ -71,9 +79,10 @@ public class AusdruckServiceImpl implements AusdruckService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Ausdruck> findOne(Long id) {
+    public Optional<AusdruckDTO> findOne(Long id) {
         log.debug("Request to get Ausdruck : {}", id);
-        return ausdruckRepository.findOneWithEagerRelationships(id);
+        return ausdruckRepository.findOneWithEagerRelationships(id)
+            .map(ausdruckMapper::toDto);
     }
 
     /**

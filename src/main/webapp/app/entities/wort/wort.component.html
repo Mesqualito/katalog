@@ -15,24 +15,26 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="intId"><span jhiTranslate="katalogApp.wort.intId">Int Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="eWort"><span jhiTranslate="katalogApp.wort.eWort">E Wort</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="sprache.sprache"><span jhiTranslate="katalogApp.wort.sprache">Sprache</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="gruppe.gruppe"><span jhiTranslate="katalogApp.wort.gruppe">Gruppe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="spracheSprachCode"><span jhiTranslate="katalogApp.wort.sprache">Sprache</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="gruppeGruppenCode"><span jhiTranslate="katalogApp.wort.gruppe">Gruppe</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let wort of worts ;trackBy: trackId">
                 <td><a [routerLink]="['/wort', wort.id, 'view' ]">{{wort.id}}</a></td>
+                <td>{{wort.intId}}</td>
                 <td>{{wort.eWort}}</td>
                 <td>
-                    <div *ngIf="wort.sprache">
-                        <a [routerLink]="['../sprache', wort.sprache?.id, 'view' ]" >{{wort.sprache?.sprache}}</a>
+                    <div *ngIf="wort.spracheId">
+                        <a [routerLink]="['../sprache', wort.spracheId , 'view' ]" >{{wort.spracheSprachCode}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="wort.gruppe">
-                        <a [routerLink]="['../gruppe', wort.gruppe?.id, 'view' ]" >{{wort.gruppe?.gruppe}}</a>
+                    <div *ngIf="wort.gruppeId">
+                        <a [routerLink]="['../gruppe', wort.gruppeId , 'view' ]" >{{wort.gruppeGruppenCode}}</a>
                     </div>
                 </td>
                 <td class="text-right">

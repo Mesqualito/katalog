@@ -1,0 +1,58 @@
+entity Sprache {
+	sprachCode String required,
+    sprachBezeichnung String
+}
+
+entity Gruppe {
+	gruppenCode String required,
+    gruppenBezeichnung String
+}
+
+entity Wort {
+	intId Long required
+	eWort String required
+}
+
+entity Bezeichnung {
+	bezeichnung String required
+}
+
+entity Ausdruck {
+	ausdruck String required
+}
+
+relationship OneToOne {
+	Wort{Sprache(sprachCode)} to Sprache,
+    Bezeichnung{Sprache(sprachCode)} to Sprache,
+    Ausdruck{Sprache(sprachCode)} to Sprache
+}
+
+/**
+***** Bi-directional one-to-many relationship *****
+* EntityOne (1) <------> (*) EntityMany
+* EntityOne{entityMany} to EntityMany{name_of_linkField(entityOne)}
+*/
+relationship ManyToOne {
+	Wort{Gruppe(gruppenCode)} to Gruppe{single},
+    Bezeichnung{Gruppe(gruppenCode)} to Gruppe{bezeichnung},
+	Ausdruck{Gruppe(gruppenCode)} to Gruppe{ausdruck}
+}
+
+relationship ManyToMany {
+	Wort{Einzelwort(eWort)} to Wort{wort},
+    Bezeichnung{Einzelwort(eWort)} to Wort{bezeichnung},
+    Ausdruck{Einzelwort(eWort)} to Wort{ausdruck}
+}
+
+// Set pagination options
+paginate Sprache, Gruppe with infinite-scroll
+paginate Wort, Bezeichnung, Ausdruck with pagination
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

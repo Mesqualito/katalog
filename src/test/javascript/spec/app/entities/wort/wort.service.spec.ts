@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(WortService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Wort(0, 'AAAAAAA');
+            elemDefault = new Wort(0, 0, 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
@@ -55,6 +55,7 @@ describe('Service Tests', () => {
             it('should update a Wort', async () => {
                 const returnedFromService = Object.assign(
                     {
+                        intId: 1,
                         eWort: 'BBBBBB'
                     },
                     elemDefault
@@ -72,6 +73,7 @@ describe('Service Tests', () => {
             it('should return a list of Wort', async () => {
                 const returnedFromService = Object.assign(
                     {
+                        intId: 1,
                         eWort: 'BBBBBB'
                     },
                     elemDefault

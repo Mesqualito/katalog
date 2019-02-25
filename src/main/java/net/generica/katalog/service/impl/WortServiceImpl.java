@@ -3,6 +3,8 @@ package net.generica.katalog.service.impl;
 import net.generica.katalog.service.WortService;
 import net.generica.katalog.domain.Wort;
 import net.generica.katalog.repository.WortRepository;
+import net.generica.katalog.service.dto.WortDTO;
+import net.generica.katalog.service.mapper.WortMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,20 +26,25 @@ public class WortServiceImpl implements WortService {
 
     private final WortRepository wortRepository;
 
-    public WortServiceImpl(WortRepository wortRepository) {
+    private final WortMapper wortMapper;
+
+    public WortServiceImpl(WortRepository wortRepository, WortMapper wortMapper) {
         this.wortRepository = wortRepository;
+        this.wortMapper = wortMapper;
     }
 
     /**
      * Save a wort.
      *
-     * @param wort the entity to save
+     * @param wortDTO the entity to save
      * @return the persisted entity
      */
     @Override
-    public Wort save(Wort wort) {
-        log.debug("Request to save Wort : {}", wort);
-        return wortRepository.save(wort);
+    public WortDTO save(WortDTO wortDTO) {
+        log.debug("Request to save Wort : {}", wortDTO);
+        Wort wort = wortMapper.toEntity(wortDTO);
+        wort = wortRepository.save(wort);
+        return wortMapper.toDto(wort);
     }
 
     /**
@@ -48,9 +55,10 @@ public class WortServiceImpl implements WortService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Wort> findAll(Pageable pageable) {
+    public Page<WortDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Worts");
-        return wortRepository.findAll(pageable);
+        return wortRepository.findAll(pageable)
+            .map(wortMapper::toDto);
     }
 
     /**
@@ -58,8 +66,8 @@ public class WortServiceImpl implements WortService {
      *
      * @return the list of entities
      */
-    public Page<Wort> findAllWithEagerRelationships(Pageable pageable) {
-        return wortRepository.findAllWithEagerRelationships(pageable);
+    public Page<WortDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return wortRepository.findAllWithEagerRelationships(pageable).map(wortMapper::toDto);
     }
     
 
@@ -71,9 +79,10 @@ public class WortServiceImpl implements WortService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Wort> findOne(Long id) {
+    public Optional<WortDTO> findOne(Long id) {
         log.debug("Request to get Wort : {}", id);
-        return wortRepository.findOneWithEagerRelationships(id);
+        return wortRepository.findOneWithEagerRelationships(id)
+            .map(wortMapper::toDto);
     }
 
     /**

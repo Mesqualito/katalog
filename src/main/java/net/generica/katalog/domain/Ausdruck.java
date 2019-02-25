@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -27,7 +28,8 @@ public class Ausdruck implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "ausdruck")
+    @NotNull
+    @Column(name = "ausdruck", nullable = false)
     private String ausdruck;
 
     @OneToOne

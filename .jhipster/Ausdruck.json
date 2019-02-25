@@ -3,7 +3,10 @@
     "fields": [
         {
             "fieldName": "ausdruck",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "relationships": [
@@ -11,7 +14,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "sprache",
             "otherEntityName": "sprache",
-            "otherEntityField": "sprache",
+            "otherEntityField": "sprachCode",
             "ownerSide": true,
             "otherEntityRelationshipName": "ausdruck"
         },
@@ -19,7 +22,7 @@
             "relationshipType": "many-to-one",
             "relationshipName": "gruppe",
             "otherEntityName": "gruppe",
-            "otherEntityField": "gruppe",
+            "otherEntityField": "gruppenCode",
             "otherEntityRelationshipName": "ausdruck"
         },
         {
@@ -27,13 +30,13 @@
             "otherEntityRelationshipName": "ausdruck",
             "relationshipName": "einzelwort",
             "otherEntityName": "wort",
-            "otherEntityField": "wort",
+            "otherEntityField": "eWort",
             "ownerSide": true
         }
     ],
-    "changelogDate": "20190212094903",
+    "changelogDate": "20190213134135",
     "entityTableName": "ausdruck",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

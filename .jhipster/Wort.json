@@ -2,6 +2,13 @@
     "name": "Wort",
     "fields": [
         {
+            "fieldName": "intId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "eWort",
             "fieldType": "String",
             "fieldValidateRules": [
@@ -14,7 +21,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "sprache",
             "otherEntityName": "sprache",
-            "otherEntityField": "sprache",
+            "otherEntityField": "sprachCode",
             "ownerSide": true,
             "otherEntityRelationshipName": "wort"
         },
@@ -22,7 +29,7 @@
             "relationshipType": "many-to-one",
             "relationshipName": "gruppe",
             "otherEntityName": "gruppe",
-            "otherEntityField": "gruppe",
+            "otherEntityField": "gruppenCode",
             "otherEntityRelationshipName": "single"
         },
         {
@@ -30,7 +37,7 @@
             "otherEntityRelationshipName": "wort",
             "relationshipName": "einzelwort",
             "otherEntityName": "wort",
-            "otherEntityField": "wort",
+            "otherEntityField": "eWort",
             "ownerSide": true
         },
         {
@@ -55,9 +62,9 @@
             "otherEntityRelationshipName": "einzelwort"
         }
     ],
-    "changelogDate": "20190212094901",
+    "changelogDate": "20190213134133",
     "entityTableName": "wort",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "pagination",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

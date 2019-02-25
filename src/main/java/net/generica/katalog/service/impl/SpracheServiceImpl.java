@@ -3,6 +3,8 @@ package net.generica.katalog.service.impl;
 import net.generica.katalog.service.SpracheService;
 import net.generica.katalog.domain.Sprache;
 import net.generica.katalog.repository.SpracheRepository;
+import net.generica.katalog.service.dto.SpracheDTO;
+import net.generica.katalog.service.mapper.SpracheMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,20 +26,25 @@ public class SpracheServiceImpl implements SpracheService {
 
     private final SpracheRepository spracheRepository;
 
-    public SpracheServiceImpl(SpracheRepository spracheRepository) {
+    private final SpracheMapper spracheMapper;
+
+    public SpracheServiceImpl(SpracheRepository spracheRepository, SpracheMapper spracheMapper) {
         this.spracheRepository = spracheRepository;
+        this.spracheMapper = spracheMapper;
     }
 
     /**
      * Save a sprache.
      *
-     * @param sprache the entity to save
+     * @param spracheDTO the entity to save
      * @return the persisted entity
      */
     @Override
-    public Sprache save(Sprache sprache) {
-        log.debug("Request to save Sprache : {}", sprache);
-        return spracheRepository.save(sprache);
+    public SpracheDTO save(SpracheDTO spracheDTO) {
+        log.debug("Request to save Sprache : {}", spracheDTO);
+        Sprache sprache = spracheMapper.toEntity(spracheDTO);
+        sprache = spracheRepository.save(sprache);
+        return spracheMapper.toDto(sprache);
     }
 
     /**
@@ -48,9 +55,10 @@ public class SpracheServiceImpl implements SpracheService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Sprache> findAll(Pageable pageable) {
+    public Page<SpracheDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Spraches");
-        return spracheRepository.findAll(pageable);
+        return spracheRepository.findAll(pageable)
+            .map(spracheMapper::toDto);
     }
 
 
@@ -62,9 +70,10 @@ public class SpracheServiceImpl implements SpracheService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Sprache> findOne(Long id) {
+    public Optional<SpracheDTO> findOne(Long id) {
         log.debug("Request to get Sprache : {}", id);
-        return spracheRepository.findById(id);
+        return spracheRepository.findById(id)
+            .map(spracheMapper::toDto);
     }
 
     /**

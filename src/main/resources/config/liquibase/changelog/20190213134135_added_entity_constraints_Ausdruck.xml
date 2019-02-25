@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Ausdruck.
+    -->
+    <changeSet id="20190213134135-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="sprache_id"
+                                 baseTableName="ausdruck"
+                                 constraintName="fk_ausdruck_sprache_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sprache"/>
+
+        <addForeignKeyConstraint baseColumnNames="gruppe_id"
+                                 baseTableName="ausdruck"
+                                 constraintName="fk_ausdruck_gruppe_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="gruppe"/>
+
+        <addForeignKeyConstraint baseColumnNames="ausdruck_id"
+                                 baseTableName="ausdruck_einzelwort"
+                                 constraintName="fk_ausdruck_einzelwort_ausdruck_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ausdruck"/>
+        <addForeignKeyConstraint baseColumnNames="einzelwort_id"
+                                 baseTableName="ausdruck_einzelwort"
+                                 constraintName="fk_ausdruck_einzelwort_einzelwort_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="wort"/>
+        
+    </changeSet>
+</databaseChangeLog>

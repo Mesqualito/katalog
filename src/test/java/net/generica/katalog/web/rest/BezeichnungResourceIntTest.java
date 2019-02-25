@@ -5,6 +5,8 @@ import net.generica.katalog.KatalogApp;
 import net.generica.katalog.domain.Bezeichnung;
 import net.generica.katalog.repository.BezeichnungRepository;
 import net.generica.katalog.service.BezeichnungService;
+import net.generica.katalog.service.dto.BezeichnungDTO;
+import net.generica.katalog.service.mapper.BezeichnungMapper;
 import net.generica.katalog.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -54,6 +56,9 @@ public class BezeichnungResourceIntTest {
 
     @Mock
     private BezeichnungRepository bezeichnungRepositoryMock;
+
+    @Autowired
+    private BezeichnungMapper bezeichnungMapper;
 
     @Mock
     private BezeichnungService bezeichnungServiceMock;
@@ -115,9 +120,10 @@ public class BezeichnungResourceIntTest {
         int databaseSizeBeforeCreate = bezeichnungRepository.findAll().size();
 
         // Create the Bezeichnung
+        BezeichnungDTO bezeichnungDTO = bezeichnungMapper.toDto(bezeichnung);
         restBezeichnungMockMvc.perform(post("/api/bezeichnungs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(bezeichnung)))
+            .content(TestUtil.convertObjectToJsonBytes(bezeichnungDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Bezeichnung in the database
@@ -134,11 +140,12 @@ public class BezeichnungResourceIntTest {
 
         // Create the Bezeichnung with an existing ID
         bezeichnung.setId(1L);
+        BezeichnungDTO bezeichnungDTO = bezeichnungMapper.toDto(bezeichnung);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restBezeichnungMockMvc.perform(post("/api/bezeichnungs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(bezeichnung)))
+            .content(TestUtil.convertObjectToJsonBytes(bezeichnungDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Bezeichnung in the database
@@ -154,10 +161,11 @@ public class BezeichnungResourceIntTest {
         bezeichnung.setBezeichnung(null);
 
         // Create the Bezeichnung, which fails.
+        BezeichnungDTO bezeichnungDTO = bezeichnungMapper.toDto(bezeichnung);
 
         restBezeichnungMockMvc.perform(post("/api/bezeichnungs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(bezeichnung)))
+            .content(TestUtil.convertObjectToJsonBytes(bezeichnungDTO)))
             .andExpect(status().isBadRequest());
 
         List<Bezeichnung> bezeichnungList = bezeichnungRepository.findAll();
@@ -237,7 +245,7 @@ public class BezeichnungResourceIntTest {
     @Transactional
     public void updateBezeichnung() throws Exception {
         // Initialize the database
-        bezeichnungService.save(bezeichnung);
+        bezeichnungRepository.saveAndFlush(bezeichnung);
 
         int databaseSizeBeforeUpdate = bezeichnungRepository.findAll().size();
 
@@ -247,10 +255,11 @@ public class BezeichnungResourceIntTest {
         em.detach(updatedBezeichnung);
         updatedBezeichnung
             .bezeichnung(UPDATED_BEZEICHNUNG);
+        BezeichnungDTO bezeichnungDTO = bezeichnungMapper.toDto(updatedBezeichnung);
 
         restBezeichnungMockMvc.perform(put("/api/bezeichnungs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedBezeichnung)))
+            .content(TestUtil.convertObjectToJsonBytes(bezeichnungDTO)))
             .andExpect(status().isOk());
 
         // Validate the Bezeichnung in the database
@@ -266,11 +275,12 @@ public class BezeichnungResourceIntTest {
         int databaseSizeBeforeUpdate = bezeichnungRepository.findAll().size();
 
         // Create the Bezeichnung
+        BezeichnungDTO bezeichnungDTO = bezeichnungMapper.toDto(bezeichnung);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBezeichnungMockMvc.perform(put("/api/bezeichnungs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(bezeichnung)))
+            .content(TestUtil.convertObjectToJsonBytes(bezeichnungDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Bezeichnung in the database
@@ -282,7 +292,7 @@ public class BezeichnungResourceIntTest {
     @Transactional
     public void deleteBezeichnung() throws Exception {
         // Initialize the database
-        bezeichnungService.save(bezeichnung);
+        bezeichnungRepository.saveAndFlush(bezeichnung);
 
         int databaseSizeBeforeDelete = bezeichnungRepository.findAll().size();
 
@@ -309,5 +319,28 @@ public class BezeichnungResourceIntTest {
         assertThat(bezeichnung1).isNotEqualTo(bezeichnung2);
         bezeichnung1.setId(null);
         assertThat(bezeichnung1).isNotEqualTo(bezeichnung2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(BezeichnungDTO.class);
+        BezeichnungDTO bezeichnungDTO1 = new BezeichnungDTO();
+        bezeichnungDTO1.setId(1L);
+        BezeichnungDTO bezeichnungDTO2 = new BezeichnungDTO();
+        assertThat(bezeichnungDTO1).isNotEqualTo(bezeichnungDTO2);
+        bezeichnungDTO2.setId(bezeichnungDTO1.getId());
+        assertThat(bezeichnungDTO1).isEqualTo(bezeichnungDTO2);
+        bezeichnungDTO2.setId(2L);
+        assertThat(bezeichnungDTO1).isNotEqualTo(bezeichnungDTO2);
+        bezeichnungDTO1.setId(null);
+        assertThat(bezeichnungDTO1).isNotEqualTo(bezeichnungDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(bezeichnungMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(bezeichnungMapper.fromId(null)).isNull();
     }
 }

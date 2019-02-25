@@ -3,6 +3,8 @@ package net.generica.katalog.service.impl;
 import net.generica.katalog.service.GruppeService;
 import net.generica.katalog.domain.Gruppe;
 import net.generica.katalog.repository.GruppeRepository;
+import net.generica.katalog.service.dto.GruppeDTO;
+import net.generica.katalog.service.mapper.GruppeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,20 +26,25 @@ public class GruppeServiceImpl implements GruppeService {
 
     private final GruppeRepository gruppeRepository;
 
-    public GruppeServiceImpl(GruppeRepository gruppeRepository) {
+    private final GruppeMapper gruppeMapper;
+
+    public GruppeServiceImpl(GruppeRepository gruppeRepository, GruppeMapper gruppeMapper) {
         this.gruppeRepository = gruppeRepository;
+        this.gruppeMapper = gruppeMapper;
     }
 
     /**
      * Save a gruppe.
      *
-     * @param gruppe the entity to save
+     * @param gruppeDTO the entity to save
      * @return the persisted entity
      */
     @Override
-    public Gruppe save(Gruppe gruppe) {
-        log.debug("Request to save Gruppe : {}", gruppe);
-        return gruppeRepository.save(gruppe);
+    public GruppeDTO save(GruppeDTO gruppeDTO) {
+        log.debug("Request to save Gruppe : {}", gruppeDTO);
+        Gruppe gruppe = gruppeMapper.toEntity(gruppeDTO);
+        gruppe = gruppeRepository.save(gruppe);
+        return gruppeMapper.toDto(gruppe);
     }
 
     /**
@@ -48,9 +55,10 @@ public class GruppeServiceImpl implements GruppeService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Gruppe> findAll(Pageable pageable) {
+    public Page<GruppeDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Gruppes");
-        return gruppeRepository.findAll(pageable);
+        return gruppeRepository.findAll(pageable)
+            .map(gruppeMapper::toDto);
     }
 
 
@@ -62,9 +70,10 @@ public class GruppeServiceImpl implements GruppeService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<Gruppe> findOne(Long id) {
+    public Optional<GruppeDTO> findOne(Long id) {
         log.debug("Request to get Gruppe : {}", id);
-        return gruppeRepository.findById(id);
+        return gruppeRepository.findById(id)
+            .map(gruppeMapper::toDto);
     }
 
     /**

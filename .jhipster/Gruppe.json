@@ -33,9 +33,9 @@
             "otherEntityRelationshipName": "gruppe"
         }
     ],
-    "changelogDate": "20190212094900",
+    "changelogDate": "20190213134132",
     "entityTableName": "gruppe",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "infinite-scroll",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
